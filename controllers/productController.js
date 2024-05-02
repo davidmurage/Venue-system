@@ -7,7 +7,7 @@ import fs from "fs";
 export const createProductController = async (req, res) => {
     try{
         const { name, description, price, category, quantity, shipping } = req.fields;
-        const {photo} = req.files;
+        const { photo } = req.files;
 
         //validation
         switch(true){
