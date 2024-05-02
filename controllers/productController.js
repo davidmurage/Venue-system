@@ -22,8 +22,8 @@ export const createProductController = async (req, res) => {
             case !quantity:
                 return res.status(500).json({error: "Quantity is required"});
 
-            case photo && photo.size > 1000000:
-                return res.status(500).json({error: "Photo is required and should be less than 1mb"});
+            case photo && photo.size > 3000000:
+                return res.status(500).json({error: "Photo is required and should be less than 3mb"});
         }
 
         const products = new productModel({...req.fields, slug: slugify(name)});
@@ -39,5 +39,20 @@ export const createProductController = async (req, res) => {
     }catch(error){
         console.log(error);
         res.status(500).send({success: false, message: "Error in creating product", error})
+    }
+};
+
+//get all products
+export const getProductController = async(req, res) => {
+    try{
+        const products = await productModel
+        .find({})
+        .populate("category")
+        .select("-photo")
+        .limit(12)
+        .sort({createdAt: -1});
+    }catch(error){
+        console.log(error);
+        res.status(500).send({success: false, message: "Error in getting products", error});
     }
 };
