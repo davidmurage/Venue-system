@@ -51,8 +51,41 @@ export const getProductController = async(req, res) => {
         .select("-photo")
         .limit(12)
         .sort({createdAt: -1});
+        res.status(200).send({success: true,countTotal: products.length, message:'All products', products});
     }catch(error){
         console.log(error);
         res.status(500).send({success: false, message: "Error in getting products", error});
     }
 };
+
+//get single product
+export const getSingleProductController = async(req, res) => {
+    try{
+        const product = await productModel
+        .findOne({slug: req.params.slug})
+        .select("-photo")
+        .populate("category");
+        res.status(200).send({success: true, message: "Single product fetched", product});
+    }catch(error){
+        console.log(error);
+        res.status(500).send({success: false, message: "Error in getting single product", error});
+    }
+};
+
+//product photo
+export const productPhotoController = async(req, res) => {
+    try{
+        const product = await productModel.findById(req.params.pid).select("photo");
+        if(product.photo.data){
+            res.set("Content-Type", product.photo.contentType);
+            return res.send(product.photo.data);
+        }
+    }catch(error){
+        console.log(error);
+        res.status(500).send({success: false, message: "Error in getting product photo", error});
+    }
+};
+
+//delete product
+export const deleteProductController = async(req, res) => {}
+    
