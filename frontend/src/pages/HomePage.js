@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { Checkbox, Radio } from 'antd';
+import "../styles/Homepage.css";
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -160,7 +161,7 @@ const filterProduct = async () => {
 
                     <button className='btn btn-primary ms-1' onClick={() => navigate(`/product/${p.slug}`)}>More Details</button>
                     <button className='btn btn-secondary ms-1' onClick={() =>{ 
-                      setCart(...cart, p)
+                      setCart([...cart, p]);
                       toast.success('Item added to cart')
                       }}>Add to Cart</button>
                   </div>
