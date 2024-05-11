@@ -20,7 +20,13 @@ const app = express();
 
 //middleware
 app.use(express.json());
-app.use(cors());
+app.use(cors(
+  {
+    origin: [],
+    methods: ['GET', 'POST', ],
+    credentials: true
+  }
+));
 app.use(morgan('dev'));
 
 
