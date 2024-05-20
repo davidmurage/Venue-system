@@ -114,7 +114,7 @@ const filterProduct = async () => {
 };
 
   return (
-    <Layout title={"All Products - Best offers "}>
+    <Layout title={"All Products - Best of all time offers "}>
     {/* banner image */}
     <img
       src="/images/banner.png"
