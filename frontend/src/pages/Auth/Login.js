@@ -14,7 +14,7 @@ const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // form function to handle submit
+  // function to handle submit
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
