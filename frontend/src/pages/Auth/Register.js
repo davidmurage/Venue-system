@@ -36,7 +36,7 @@ const Register = () => {
       toast.error("Something went wrong");
     }
   };
-  console.log(process.env.REACT_APP_API);
+  //console.log(process.env.REACT_APP_API);
 
   return (
     <Layout title="Register - Ecommer App">

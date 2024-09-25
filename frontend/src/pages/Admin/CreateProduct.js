@@ -53,7 +53,7 @@ const CreateProduct = () => {
       if (data?.success) {
         toast.error(data?.message);
       } else {
-        toast.success("Product Created Successfully");
+        toast.success("Venue Created Successfully");
         navigate("/dashboard/admin/products");
       }
     } catch (error) {
@@ -63,14 +63,14 @@ const CreateProduct = () => {
   };
 
   return (
-    <Layout title={"Dashboard - Creating Product"}>
+    <Layout title={"Dashboard - Creating venue"}>
       <div className="container-fluid m-3 p-3 dashboard">
         <div className="row">
           <div className="col-md-3">
             <AdminMenu />
           </div>
           <div className="col-md-9">
-            <h1>Create Product</h1>
+            <h1>Create Venue</h1>
             <div className="m-1 w-75">
               <Select
                 bordered={false}
@@ -166,7 +166,7 @@ const CreateProduct = () => {
               </div>
               <div className="mb-3">
                 <button className="btn btn-primary" onClick={handleCreate}>
-                  CREATE PRODUCT
+                  CREATE VENUE
                 </button>
               </div>
             </div>

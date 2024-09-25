@@ -114,7 +114,7 @@ const filterProduct = async () => {
 };
 
   return (
-    <Layout title={"All Products - Best of all time offers "}>
+    <Layout title={"All Venues - Best of all time offers "}>
     {/* banner image */}
     <img
       src="/images/banner.png"
@@ -157,7 +157,7 @@ const filterProduct = async () => {
         </div>
       </div>
       <div className="col-md-9 ">
-        <h1 className="text-center">All Products</h1>
+        <h1 className="text-center">All Venues</h1>
         <div className="d-flex flex-wrap">
           {products?.map((p) => (
             <div className="card m-2" key={p._id}>
@@ -197,7 +197,7 @@ const filterProduct = async () => {
                       toast.success("Item Added to cart");
                     }}
                   >
-                    ADD TO CART
+                    Book Now
                   </button>
                 </div>
               </div>
