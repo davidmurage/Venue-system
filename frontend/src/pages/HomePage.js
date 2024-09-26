@@ -116,12 +116,14 @@ const filterProduct = async () => {
   return (
     <Layout title={"All Venues - Best of all time offers "}>
     {/* banner image */}
-    <img
+    
+   {/* <img
       src="/images/banner.png"
       className="banner-img"
       alt="bannerimage"
       width={"100%"}
-    />
+    />*/}
+
     {/* banner image */}
     <div className="container-fluid row mt-3 home-page">
       <div className="col-md-3 filters">

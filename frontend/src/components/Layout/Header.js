@@ -29,7 +29,7 @@ const Header = () => {
            <span className="navbar-toggler-icon"></span>
            </button>
          <div className="collapse navbar-collapse" id="navbarTogglerDemo01">
-         <Link to='/' className="navbar-brand" ><GiShoppingBag />Essex-Group</Link>
+         <Link to='/' className="navbar-brand" ><GiShoppingBag />Venue-booking</Link>
          <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
           <SearchInput/>
           <li className="nav-item">

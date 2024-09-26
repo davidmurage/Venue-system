@@ -37,7 +37,7 @@ export const createProductController = async (req, res) => {
             case !quantity:
                 return res.status(500).json({error: "Quantity is required"});
 
-            case photo && photo.size > 1000000:
+            case photo && photo.size > 5000000:
                 return res.status(500).json({error: "Photo is required and should be less than 1mb"});
         }
 
@@ -116,7 +116,7 @@ export const deleteProductController = async(req, res) => {
 //update product
 export const updateProductController = async(req, res) => {
     try{
-        const { name, description, price, category, quantity, shipping } = req.fields;
+        const { name, description, price, category, quantity} = req.fields;
         const { photo } = req.files;
 
         //validation
