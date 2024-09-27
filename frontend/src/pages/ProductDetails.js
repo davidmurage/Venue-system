@@ -58,7 +58,7 @@ const ProductDetails = () => {
           />
         </div>
         <div className='col-md-6 product-details-info'>
-            <h1 className='text-center'>Product Details</h1>
+            <h1 className='text-center'>Venue Details</h1>
             <hr />
             <h6>Name: {product.name}</h6>
             <h6>Description: {product.description}</h6>
@@ -71,16 +71,16 @@ const ProductDetails = () => {
             })}
           </h6>
           <h6>Category : {product?.category?.name}</h6>
-          <button class="btn btn-secondary ms-1">ADD TO CART</button>
+          <button class="btn btn-secondary ms-1">Book Now</button>
 
         </div>
    
       </div>
       <hr />
       <div className="row container similar-products">
-        <h4>Similar Products ➡️</h4>
+        <h4>Similar Venues ➡️</h4>
         {relatedProducts.length < 1 && (
-          <p className="text-center">No Similar Products found</p>
+          <p className="text-center">No Similar Venues found</p>
         )}
         <div className="d-flex flex-wrap">
           {relatedProducts?.map((p) => (
@@ -121,7 +121,7 @@ const ProductDetails = () => {
                     toast.success("Item Added to cart");
                   }}
                 >
-                  ADD TO CART
+                  Book Now
                 </button> 
                 </div>
               </div>
