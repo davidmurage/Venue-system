@@ -69,7 +69,7 @@ const ProductDetails = () => {
             })}
           </h6>
           <h6>Category : {product?.category?.name}</h6>
-          <button class="btn btn-secondary ms-1">Book Now</button>
+          <Link to={'/book/:slug'}><button class="btn btn-secondary ms-1">Book Now</button></Link>
 
         </div>
    
@@ -108,7 +108,7 @@ const ProductDetails = () => {
                   >
                     More Details
                   </button>
-                  <Link to={"/book/:slug"}> <button className="btn btn-dark ms-1">Book Now</button></Link>
+                  <Link to={"/book/:slug"}><button className="btn btn-dark ms-1">Book Now</button></Link>
                 </div>
               </div>
             </div>
