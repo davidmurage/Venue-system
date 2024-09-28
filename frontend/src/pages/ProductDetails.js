@@ -1,8 +1,7 @@
 import React, {useEffect, useState } from 'react'
 import Layout from '../components/Layout/Layout'
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
-import { useCart } from '../context/cart';
+import { Link, useParams } from 'react-router-dom';
 import "../styles/ProductDetailsStyles.css";
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
@@ -10,7 +9,6 @@ import toast from 'react-hot-toast';
 const ProductDetails = () => {
     const navigate = useNavigate();
     const params = useParams();
-    const [cart, setCart] = useCart();
     const [product, setProduct] = useState({});
     const [relatedProducts, setRelatedProducts] = useState([]);
 
@@ -110,19 +108,7 @@ const ProductDetails = () => {
                   >
                     More Details
                   </button>
-                  <button
-                  className="btn btn-dark ms-1"
-                  onClick={() => {
-                    setCart([...cart, p]);
-                    localStorage.setItem(
-                      "cart",
-                      JSON.stringify([...cart, p])
-                    );
-                    toast.success("Item Added to cart");
-                  }}
-                >
-                  Book Now
-                </button> 
+                  <Link to={"/book/:slug"}> <button className="btn btn-dark ms-1">Book Now</button></Link>
                 </div>
               </div>
             </div>

@@ -24,6 +24,7 @@ import Categories from './pages/Categories';
 import CategoryProduct from './pages/CategoryProduct';
 import CartPage from './pages/CartPage';
 import AdminOrders from './pages/Admin/AdminOrders';
+import BookingForm from './pages/bookingForm';
 
 function App() {
   return(
@@ -58,6 +59,7 @@ function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/policy" element={<Policy />} />
         <Route path="*" element={<Pagenotfound />} />
+        <Route path='/book/:slug' element={<BookingForm/>}/>
   </Routes>
   </> 
   );

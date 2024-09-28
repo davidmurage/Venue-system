@@ -1,9 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import Layout from '../components/Layout/Layout'
-import { useAuth } from '../context/auth';
 import { Prices } from "../components/Prices";
-import { useCart } from "../context/cart";
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { Checkbox, Radio } from 'antd';
@@ -12,8 +10,6 @@ import "../styles/Homepage.css";
 
 const HomePage = () => {
   const navigate = useNavigate();
-  const [cart, setCart] = useCart();
-  const [auth,setAuth] = useAuth();
   const [products,setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [checked, setChecked] = useState([]);
@@ -188,19 +184,7 @@ const filterProduct = async () => {
                   >
                     More Details
                   </button>
-                  <button
-                    className="btn btn-dark ms-1"
-                    onClick={() => {
-                      setCart([...cart, p]);
-                      localStorage.setItem(
-                        "cart",
-                        JSON.stringify([...cart, p])
-                      );
-                      toast.success("Item Added to cart");
-                    }}
-                  >
-                    Book Now
-                  </button>
+                  <Link to={'/book/:slug'}><button className="btn btn-dark ms-2">Book Now</button></Link>
                 </div>
               </div>
             </div>
