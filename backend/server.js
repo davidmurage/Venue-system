@@ -7,6 +7,7 @@ import morgan from 'morgan';
 import authRoutes from './routes/authRoute.js';
 import categoryRoute from './routes/categoryRoutes.js';
 import productRoute from './routes/productRoute.js';
+import bookingRoute from './routes/bookingRoute.js';
 
 
 //dotenv
@@ -34,6 +35,7 @@ app.use(morgan('dev'));
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/category', categoryRoute);
 app.use('/api/v1/product', productRoute);
+app.use('/api/v1/booking', bookingRoute)
 
 //rest api
 app.get('/', (req, res) => {
