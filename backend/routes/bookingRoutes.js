@@ -1,4 +1,5 @@
-import { createBooking, getBooking } from "../controllers/bookingController.js";
+import { createBooking, getBooking, getUserBookings } from "../controllers/bookingController.js";
+import { requireSignIn } from "../middlewares/authMiddleware.js";
 import express from "express";
 
 const router = express.Router();
@@ -6,6 +7,8 @@ const router = express.Router();
 router.post('/create-bookings', createBooking);
 
 router.get('/get-bookings', getBooking);
+
+router.get('/get-myBookings', requireSignIn,   getUserBookings);
 
 export default router;
 

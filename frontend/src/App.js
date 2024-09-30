@@ -14,7 +14,6 @@ import AdminDashboard from './pages/Admin/AdminDashboard';
 import CreateCategory from './pages/Admin/CreateCategory';
 import CreateProduct from './pages/Admin/CreateProduct';
 import Users from './pages/Admin/Users';
-import Orders from './pages/user/Orders';
 import Profile from './pages/user/Profile';
 import Products from './pages/Admin/Products';
 import UpdateProduct from './pages/Admin/UpdateProduct';
@@ -25,6 +24,7 @@ import CategoryProduct from './pages/CategoryProduct';
 import CartPage from './pages/CartPage';
 import AdminOrders from './pages/Admin/AdminOrders';
 import BookingForm from './pages/bookingForm';
+import MyBookings from './pages/user/MyBookings';
 
 function App() {
   return(
@@ -39,7 +39,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path='/dashboard' element={<PrivateRoute/>}>
           <Route path="user" element={<Dashboard />} />
-          <Route path='user/orders' element={<Orders/>}/>
+          <Route path='user/myBookings' element={<MyBookings/>}/>
           <Route path='user/profile' element={<Profile/>} />
         </Route>
 

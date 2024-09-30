@@ -28,3 +28,14 @@ export const getBooking = async(req,res) =>{
         res.status(500).json({error:"Something went wrong"});
     }
 }
+
+export const getUserBookings = async(req, res) => {
+    try {
+        const userId = req.user._id
+        const bookings = await Booking.find({user:userId});
+        res.send(200).json({success: true, bookings});
+    }catch(error){
+        console.log(error);
+        res.status(500).json({error:"Something went wrong"});
+    }
+}

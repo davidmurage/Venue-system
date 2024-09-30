@@ -29,6 +29,7 @@ const BookingForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
     try {
       const res = await axios.post('/api/v1/booking/create-bookings', formData); // Modify API endpoint accordingly
       toast.success('Booking successful');

@@ -14,10 +14,10 @@ const UserMenu = () => {
             Profile
           </NavLink>
           <NavLink
-            to="/dashboard/user/orders"
+            to="/dashboard/user/myBookings"
             className="list-group-item list-group-item-action"
           >
-            Orders
+            MyBookings
           </NavLink>
         </div>
       </div>
