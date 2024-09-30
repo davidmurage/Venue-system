@@ -2,13 +2,14 @@ import Booking from "../models/bookingModel.js";
 
 export const createBooking = async(req,res) =>{
     try {
-        const {name,email,venue,date} = req.body;
+        const {name,email,venue,date,time} = req.body;
 
         const booking = new Booking({
             name,
             email,
             venue,
-            date
+            date,
+            time
         });
         await booking.save();
         res.json({message:"Booking successful"});

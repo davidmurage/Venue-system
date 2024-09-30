@@ -15,6 +15,11 @@ const BookingForm = () => {
   const navigate = useNavigate();
   const { slug } = useParams(); // Assuming slug identifies the venue
 
+  useState(()=>{
+    setFormData((prevData) =>({...prevData, venue:slug}))
+  }
+  ,[slug])
+
   const handleChange = (e) => {
     setFormData({
       ...formData,
