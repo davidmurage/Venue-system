@@ -7,7 +7,7 @@ import morgan from 'morgan';
 import authRoutes from './routes/authRoute.js';
 import categoryRoute from './routes/categoryRoutes.js';
 import productRoute from './routes/productRoute.js';
-import bookingRoute from './routes/bookingRoute.js';
+import bookingRoute from './routes/bookingRoutes.js';
 
 
 //dotenv
