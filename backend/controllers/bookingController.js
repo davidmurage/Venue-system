@@ -34,8 +34,11 @@ export const getBooking = async(req,res) =>{
 
 export const getUserBookings = async(req, res) => {
     try {
+        console.log(req)
         const userId = req.user._id
+        console.log(userId)
         const bookings = await Booking.find({user:userId});
+        console.log(bookings);
         res.status(200).json({success: true, bookings});
     }catch(error){
         console.log(error);

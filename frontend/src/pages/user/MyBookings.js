@@ -11,9 +11,10 @@ const MyBookings = () => {
         const fetchBookings = async()=>{
             try{
                 const token = localStorage.getItem('token');
-                const res = await axios.get('/api/v1/booking/get-myBookings',{
+                console.log(token);
+                const res = await axios.get('/api/v1/booking/get-myBookings', {
                     headers:{
-                        Authorization: `Bearer ${token}`
+                        authorization: `Bearer ${token}`
                     }
                 })
                 setBookings(res.data.bookings);
