@@ -4,12 +4,15 @@ export const createBooking = async(req,res) =>{
     try {
         const {name,email,venue,date,time} = req.body;
 
+        const userId = req.user._id;
+
         const booking = new Booking({
             name,
             email,
             venue,
             date,
-            time
+            time,
+            user: userId
         });
         await booking.save();
         res.json({message:"Booking successful"});
@@ -33,7 +36,7 @@ export const getUserBookings = async(req, res) => {
     try {
         const userId = req.user._id
         const bookings = await Booking.find({user:userId});
-        res.send(200).json({success: true, bookings});
+        res.status(200).json({success: true, bookings});
     }catch(error){
         console.log(error);
         res.status(500).json({error:"Something went wrong"});

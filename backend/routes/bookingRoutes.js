@@ -4,7 +4,7 @@ import express from "express";
 
 const router = express.Router();
 
-router.post('/create-bookings', createBooking);
+router.post('/create-bookings',requireSignIn, createBooking);
 
 router.get('/get-bookings', getBooking);
 
