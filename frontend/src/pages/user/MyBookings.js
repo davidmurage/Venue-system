@@ -11,7 +11,6 @@ const MyBookings = () => {
         const fetchBookings = async()=>{
             try{
                 const token = localStorage.getItem('token');
-                console.log(token);
                 const res = await axios.get('/api/v1/booking/get-myBookings', {
                     headers:{
                         authorization: `Bearer ${token}`
@@ -46,6 +45,7 @@ const MyBookings = () => {
                 <th>Venue</th>
                 <th>Date</th>
                 <th>Time</th>
+                <th>photo</th>
               </tr>
             </thead>
             <tbody>
@@ -54,6 +54,13 @@ const MyBookings = () => {
                   <td>{booking.venue}</td>
                   <td>{new Date(booking.date).toLocaleDateString()}</td>
                   <td>{booking.time}</td>
+                    <td>
+                        <img
+                        src={booking.venue.photo}
+                        alt='venue'
+                        style={{ width: '50px', height: '50px', objectFit:'cover' }}
+                        />
+                    </td>
                 </tr>
               ))}
             </tbody>

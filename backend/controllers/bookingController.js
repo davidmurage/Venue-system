@@ -24,7 +24,7 @@ export const createBooking = async(req,res) =>{
 
 export const getBooking = async(req,res) =>{
     try {
-        const bookings = await Booking.find();
+        const bookings = await Booking.find().populate('venue', 'name photo');
         res.json({bookings});
     } catch (error) {
         console.log(error);
@@ -34,11 +34,8 @@ export const getBooking = async(req,res) =>{
 
 export const getUserBookings = async(req, res) => {
     try {
-        console.log(req)
         const userId = req.user._id
-        console.log(userId)
-        const bookings = await Booking.find({user:userId});
-        console.log(bookings);
+        const bookings = await Booking.find({user:userId}).populate('venue', 'name photo');
         res.status(200).json({success: true, bookings});
     }catch(error){
         console.log(error);
