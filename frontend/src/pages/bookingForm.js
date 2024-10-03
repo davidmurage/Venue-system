@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Layout from '../components/Layout/Layout';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -15,7 +15,7 @@ const BookingForm = () => {
   const navigate = useNavigate();
   const { slug } = useParams(); // Assuming slug identifies the venue
 
-  useState(()=>{
+  useEffect(()=>{
     setFormData((prevData) =>({...prevData, venue:slug}))
   }
   ,[slug])

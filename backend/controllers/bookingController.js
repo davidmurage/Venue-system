@@ -1,21 +1,34 @@
 import Booking from "../models/bookingModel.js";
+import productModel from "../models/productModel.js";
 
 export const createBooking = async(req,res) =>{
     try {
-        const {name,email,venue,date,time} = req.body;
+        const {name, email, venueId, date, time} = req.body;
 
         const userId = req.user._id;
+        console.log(userId);
+
+        //fetch product or venue details
+        const venue = await productModel.findById(venueId);
+        console.log(venue);
+
+        if(!venue){
+            return res.status(400).json({error:"Venue not found"});
+        }
 
         const booking = new Booking({
             name,
             email,
-            venue,
+            venue: venue._id,
+            venueName: venue.name,
+            venuePhoto: venue.photo,
             date,
             time,
             user: userId
         });
         await booking.save();
         res.json({message:"Booking successful"});
+        console.log(booking);
     } catch (error) {
         console.log(error);
         res.status(500).json({error:"Something went wrong"});
@@ -40,5 +53,24 @@ export const getUserBookings = async(req, res) => {
     }catch(error){
         console.log(error);
         res.status(500).json({error:"Something went wrong"});
+    }
+}
+
+export const cancelBooking = async(req, res) => {
+    try{
+        const bookingId = req.params.id;
+        const userId = req.user._id;
+
+        //ensures the booking belongs to the user
+        const booking = await Booking.findOneAndDelete({_id:bookingId, user:userId});
+
+        if(!booking){
+            return res.status(400).json({error:"Booking not found or Unauthorized"});
+        }
+        res.status(200).json({success: true, message: "Booking cancelled"});
+
+    }catch(error){
+        console.log(error);
+        res.status(500).json({error:"Something went"});
     }
 }

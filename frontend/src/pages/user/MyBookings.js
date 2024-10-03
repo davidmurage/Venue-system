@@ -26,6 +26,21 @@ const MyBookings = () => {
             
     }, []);
 
+    const handleCancel = async(bookingId) =>{
+        try{
+            const token = localStorage.getItem('token');
+            await axios.delete(`/api/v1/booking/delete-booking/${bookingId}`, {
+                headers:{
+                    authorization: `Bearer ${token}`
+                }
+            })
+            toast.success('Booking deleted successfully');
+            setBookings(bookings.filter((booking)=>booking._id !== bookingId))
+        }catch(error){
+            toast.error('Failed to delete booking');
+        }
+    }
+
 
   return (
     <Layout title={'Your-Bookings'}>
@@ -46,12 +61,13 @@ const MyBookings = () => {
                 <th>Date</th>
                 <th>Time</th>
                 <th>photo</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
               {bookings.map((booking) => (
                 <tr key={booking._id}>
-                  <td>{booking.venue}</td>
+                  <td>{booking.venue.name}</td>
                   <td>{new Date(booking.date).toLocaleDateString()}</td>
                   <td>{booking.time}</td>
                     <td>
@@ -61,6 +77,14 @@ const MyBookings = () => {
                         style={{ width: '50px', height: '50px', objectFit:'cover' }}
                         />
                     </td>
+                    <td>
+                        <button
+                          className="btn btn-danger"
+                          onClick={() => handleCancel(booking._id)} // Call the handleCancel function with booking ID
+                        >
+                          Cancel
+                        </button>
+                      </td>
                 </tr>
               ))}
             </tbody>
