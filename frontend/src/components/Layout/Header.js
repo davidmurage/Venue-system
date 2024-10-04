@@ -105,14 +105,15 @@ const Header = () => {
                           Logout
                         </NavLink>
                       </li>
-                      <li className="nav-item">
+                    
+                    </ul>
+                    <li className="nav-item">
                      <NavLink to="/cart" className="nav-link">
                      <Badge count={cart?.length} showZero offset={[10, -5]}>
                     Cart
                   </Badge>
                 </NavLink>
               </li>
-                    </ul>
                   </li>
           </>
           )
