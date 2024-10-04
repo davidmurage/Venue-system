@@ -6,26 +6,28 @@ export const createBooking = async(req,res) =>{
         const {name, email, venueId, date, time} = req.body;
 
         const userId = req.user._id;
-        console.log(userId);
+        
 
         //fetch product or venue details
-        const venue = await productModel.findById(venueId);
+        const venue = await productModel.findById(venue._Id);
         console.log(venue);
 
         if(!venue){
             return res.status(400).json({error:"Venue not found"});
         }
-
+        
         const booking = new Booking({
             name,
             email,
-            venue: venue._id,
+            venue: venueId,
             venueName: venue.name,
             venuePhoto: venue.photo,
             date,
             time,
             user: userId
         });
+        
+        console.log(booking)
         await booking.save();
         res.json({message:"Booking successful"});
         console.log(booking);
@@ -48,7 +50,7 @@ export const getBooking = async(req,res) =>{
 export const getUserBookings = async(req, res) => {
     try {
         const userId = req.user._id
-        const bookings = await Booking.find({user:userId}).populate('venue', 'name photo');
+        const bookings = await Booking.find({user: userId}).populate('venue', 'name photo');
         res.status(200).json({success: true, bookings});
     }catch(error){
         console.log(error);

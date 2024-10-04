@@ -67,12 +67,12 @@ const MyBookings = () => {
             <tbody>
               {bookings.map((booking) => (
                 <tr key={booking._id}>
-                  <td>{booking.venue.name}</td>
+                  <td>{booking.venue?.name}</td>
                   <td>{new Date(booking.date).toLocaleDateString()}</td>
                   <td>{booking.time}</td>
                     <td>
                         <img
-                        src={booking.venue.photo}
+                        src={booking.venue?.photo?.data || 'defaultImage.jpg'}
                         alt='venue'
                         style={{ width: '50px', height: '50px', objectFit:'cover' }}
                         />

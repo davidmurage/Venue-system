@@ -12,7 +12,7 @@ const BookingSchema = new mongoose.Schema({
   venue: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Products",
-    required: true,
+    required: false,
   },
   date: {
     type: Date,
@@ -25,7 +25,7 @@ const BookingSchema = new mongoose.Schema({
   user:{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
-    required: true
+    required: false
   }
   
 });

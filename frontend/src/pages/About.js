@@ -14,12 +14,7 @@ const About = () => {
         </div>
         <div className="col-md-4">
           <p className="text-justify mt-2">
-          We are a Technological company majoring in AI and IOT.
-           We advance Technology through cutting edge solutions to meet our customers seamless needs. 
-          We embrace the latest Technologies in Automation and  Virtual reality (VR).
-          
-          @EGL
-          Where future is made
+        Welcome to our venues web App.. we have varieties of venues suitable for meetings or meet ups.
           </p>
         </div>
       </div>

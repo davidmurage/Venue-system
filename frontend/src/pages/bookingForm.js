@@ -9,6 +9,7 @@ const BookingForm = () => {
     name: '',
     email: '',
     venue: '',
+    slug: '',
     date: '',
     time: '',
   });
