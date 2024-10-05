@@ -184,7 +184,9 @@ const filterProduct = async () => {
                     className="btn btn-info ms-1"
                     onClick={() => navigate(`/product/${p.slug}`)}
                   >
+                    
                     More Details
+
                   </button>
                   <Link to={'/book/:slug'}><button className="btn btn-dark ms-2">Book Now</button></Link>
                   <button
