@@ -157,10 +157,10 @@ const filterProduct = async () => {
         </div>
       </div>
       <div className="col-md-9 ">
-        <h1 className="text-center">All Venues</h1>
+        <h1 className="text-center"> All Venues </h1>
         <div className="d-flex flex-wrap">
           {products?.map((p) => (
-            <div className="card m-2" key={p._id}>
+            <div className="card m-2"   key={p._id}>
               <img
                 src={`/api/v1/product/product-photo/${p._id}`}
                 className="card-img-top"
@@ -184,7 +184,7 @@ const filterProduct = async () => {
                     className="btn btn-info ms-1"
                     onClick={() => navigate(`/product/${p.slug}`)}
                   >
-                    
+
                     More Details
 
                   </button>
