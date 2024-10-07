@@ -9,7 +9,7 @@ const BookingSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  product: {
+  venue: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Products",
     required: false,
