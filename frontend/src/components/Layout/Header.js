@@ -5,13 +5,11 @@ import { useAuth } from '../../context/auth';
 import SearchInput from '../Form/SearchInput';
 import useCategory from '../../hooks/useCategory';
 import toast from 'react-hot-toast';
-import { useCart } from "../../context/cart";
-import { Badge } from "antd";
 
 
 const Header = () => {
   const [auth,setAuth] = useAuth();
-  const [cart] = useCart();
+  
   const categories = useCategory();
   const handleLogout = () => {
     setAuth({
@@ -107,13 +105,7 @@ const Header = () => {
                       </li>
                     
                     </ul>
-                    <li className="nav-item">
-                     <NavLink to="/cart" className="nav-link">
-                     <Badge count={cart?.length} showZero offset={[10, -5]}>
-                    Cart
-                  </Badge>
-                </NavLink>
-              </li>
+                   
                   </li>
           </>
           )

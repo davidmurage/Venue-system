@@ -3,25 +3,23 @@ import productModel from "../models/productModel.js";
 
 export const createBooking = async(req,res) =>{
     try {
-        const {name, email, venueId, date, time} = req.body;
+        const {name, email, productId, date, time} = req.body;
 
         const userId = req.user._id;
         
 
         //fetch product or venue details
-        const venue = await productModel.findById(venue._Id);
+        const product = await productModel.find(productId);
         console.log(venue);
 
-        if(!venue){
+        if(!product){
             return res.status(400).json({error:"Venue not found"});
         }
         
         const booking = new Booking({
             name,
             email,
-            venue: venueId,
-            venueName: venue.name,
-            venuePhoto: venue.photo,
+            product: productId,
             date,
             time,
             user: userId
@@ -50,7 +48,7 @@ export const getBooking = async(req,res) =>{
 export const getUserBookings = async(req, res) => {
     try {
         const userId = req.user._id
-        const bookings = await Booking.find({user: userId}).populate('venue', 'name photo');
+        const bookings = await Booking.find({user: userId}).populate('product');
         res.status(200).json({success: true, bookings});
     }catch(error){
         console.log(error);
