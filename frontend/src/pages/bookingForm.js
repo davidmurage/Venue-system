@@ -35,7 +35,7 @@ const BookingForm = () => {
       const res = await axios.post('/api/v1/booking/create-bookings', formData, {slug});// Modify API endpoint accordingly
       if(res.status === 200 || res.data.success){
         toast.success('Booking successful');
-        navigate('/dashboard/user/myBookings'); // Redirect to myBookings 
+        navigate('/payment'); // Redirect to myBookings 
       }
      
     } catch (error) {
