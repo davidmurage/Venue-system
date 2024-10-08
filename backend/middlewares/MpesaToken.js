@@ -1,5 +1,6 @@
-const axios = require('axios');
-const dotenv = require('dotenv');
+import axios from 'axios';
+import dotenv from 'dotenv';
+
 dotenv.config();
 
 const generateMpesaToken = async () => {
@@ -19,4 +20,4 @@ const generateMpesaToken = async () => {
   }
 };
 
-module.exports = generateMpesaToken;
+export default generateMpesaToken;

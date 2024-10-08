@@ -6,6 +6,7 @@ import {
     deleteProductController, 
     getProductController, 
     getSingleProductController, 
+    paymentController, 
     productCategoryController, 
     productCountController, 
     productFiltersControlller, 
@@ -57,6 +58,9 @@ router.get('/related-product/:pid/:cid', relatedProductController);
 
 //category wise product
 router.get('/product-category/:slug', productCategoryController);
+
+//payment
+router.post('/payment', requireSignIn, paymentController);
 
 
 

@@ -2,8 +2,10 @@ import productModel from "../models/productModel.js";
 import categoryModel from "../models/categoryModel.js";
 import slugify from "slugify";
 import fs from "fs";
+import axios from 'axios';
 
 import dotenv from "dotenv";
+import generateMpesaToken from "../middlewares/MpesaToken.js";
 
 dotenv.config();
 
@@ -235,6 +237,41 @@ export const productCategoryController = async(req, res) => {
     }catch(error){
         console.log(error);
         res.status(500).send({success: false, message: "Error in getting category wise products", error});
+    }
+};
+
+//payment
+export const paymentController = async(req, res) => {
+    try{
+        const { phoneNumber, amount } = req.body;
+        const token = await generateMpesaToken();
+        const timestamp = new Date().toISOString().replace(/[^0-9]/g, "").slice(0, -3);
+        const password = Buffer.from(`${process.env.DARAJA_SHORTCODE}${process.env.DARAJA_PASSKEY}${timestamp}`).toString("base64");
+        const response = await axios.post(
+            "https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest",
+            {
+                BusinessShortCode: process.env.DARAJA_SHORTCODE,
+                Password: password,
+                Timestamp: timestamp,
+                TransactionType: "CustomerPayBillOnline",
+                Amount: amount,
+                PartyA: phoneNumber,
+                PartyB: process.env.DARAJA_SHORTCODE,
+                PhoneNumber: phoneNumber,
+                CallBackURL: "https://yourcallbackurl.com",
+                AccountReference: "Test",
+                TransactionDesc: "Test",
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            }
+        );
+        res.status(200).send({ success: true, message: "Payment request sent", response });
+    }catch(error){
+        console.log(error);
+        res.status(500).send({success: false, message: "Error in payment", error});
     }
 };
 
