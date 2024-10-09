@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
+//Mpesa token 
 const generateMpesaToken = async () => {
   const consumerKey = process.env.DARAJA_CONSUMER_KEY;
   const consumerSecret = process.env.DARAJA_CONSUMER_SECRET;
