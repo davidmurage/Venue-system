@@ -240,7 +240,7 @@ export const productCategoryController = async(req, res) => {
     }
 };
 
-//payment
+//payment for venue
 export const paymentController = async(req, res) => {
     try{
         const { phoneNumber, amount } = req.body;
