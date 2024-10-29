@@ -1,4 +1,4 @@
-import productModel from "../models/productModel.js";
+import venueModel from "../models/venueModel.js";
 import categoryModel from "../models/categoryModel.js";
 import slugify from "slugify";
 import fs from "fs";
@@ -11,8 +11,8 @@ dotenv.config();
 
 
 
-//create product 
-export const createProductController = async (req, res) => {
+//create venue 
+export const createVenueController = async (req, res) => {
     try{
         const { name, description, price, category, quantity } = req.fields;
         const { photo } = req.files;
@@ -34,80 +34,80 @@ export const createProductController = async (req, res) => {
                 return res.status(500).json({error: "Photo is required and should be less than 1mb"});
         }
 
-        const products = new productModel({...req.fields, slug: slugify(name)});
+        const venues = new venueModel({...req.fields, slug: slugify(name)});
         
         if(photo){
-            products.photo.data = fs.readFileSync(photo.path);
-            products.photo.contentType = photo.type;
+            venues.photo.data = fs.readFileSync(photo.path);
+            venues.photo.contentType = photo.type;
         }
-        await products.save();
-        res.status(201).send({success: true, message: "Product created successfully", products});
+        await venues.save();
+        res.status(201).send({success: true, message: "Venue created successfully", venues});
             
         
     }catch(error){
         console.log(error);
-        res.status(500).send({success: false, message: "Error in creating product", error})
+        res.status(500).send({success: false, message: "Error in creating venue", error})
     }
 };
 
-//get all products
-export const getProductController = async(req, res) => {
+//get all venues
+export const getVenueController = async(req, res) => {
     try{
-        const products = await productModel
+        const venues = await venueModel
         .find({})
         .populate("category")
         .select("-photo")
         .limit(12)
         .sort({createdAt: -1});
-        res.status(200).send({success: true,countTotal: products.length, message:'All products', products});
+        res.status(200).send({success: true,countTotal: venues.length, message:'All venues', venues});
     }catch(error){
         console.log(error);
-        res.status(500).send({success: false, message: "Error in getting products", error});
+        res.status(500).send({success: false, message: "Error in getting venues", error});
     }
 };
 
-//get single product
-export const getSingleProductController = async(req, res) => {
+//get single venue
+export const getSingleVenueController = async(req, res) => {
     try{
-        const product = await productModel
+        const venue = await venueModel
         .findOne({slug: req.params.slug})
         .select("-photo")
         .populate("category");
-        res.status(200).send({success: true, message: "Single product fetched", product});
+        res.status(200).send({success: true, message: "Single venue fetched", venue});
     }catch(error){
         console.log(error);
-        res.status(500).send({success: false, message: "Error in getting single product", error});
+        res.status(500).send({success: false, message: "Error in getting single venue", error});
     }
 };
 
-//product photo
-export const productPhotoController = async(req, res) => {
+//venue photo
+export const venuePhotoController = async(req, res) => {
     try{
-        const product = await productModel.findById(req.params.pid).select("photo");
-        if(product.photo.data){
-            res.set("Content-Type", product.photo.contentType);
-            return res.send(product.photo.data);
+        const venue = await venueModel.findById(req.params.pid).select("photo");
+        if(venue.photo.data){
+            res.set("Content-Type", venue.photo.contentType);
+            return res.send(venue.photo.data);
         }
     }catch(error){
         console.log(error);
-        res.status(500).send({success: false, message: "Error in getting product photo", error});
+        res.status(500).send({success: false, message: "Error in getting venue photo", error});
     }
 };
 
-//delete product
-export const deleteProductController = async(req, res) => {
+//delete venue
+export const deleteVenueController = async(req, res) => {
     try{
-        await productModel.findByIdAndDelete(req.params.pid).select("-photo");
-        res.status(200).send({success: true, message: "Product deleted successfully"});
+        await venueModel.findByIdAndDelete(req.params.pid).select("-photo");
+        res.status(200).send({success: true, message: "Venue deleted successfully"});
     }catch(error){
         console.log(error);
-        res.status(500).send({success: false, message: "Error in deleting product", error});
+        res.status(500).send({success: false, message: "Error in deleting venue", error});
     }
 }
 
 
-//update product
-export const updateProductController = async(req, res) => {
+//update venue
+export const updateVenueController = async(req, res) => {
     try{
         const { name, description, price, category, quantity} = req.fields;
         const { photo } = req.files;
@@ -129,73 +129,73 @@ export const updateProductController = async(req, res) => {
                 .status(500)
                 .send({ error: "photo is Required and should be less then 1mb" });
           }
-        const products = await productModel.findByIdAndUpdate(
+        const venues = await venueModel.findByIdAndUpdate(
             req.params.pid,
             { ...req.fields, slug: slugify(name) },
             { new: true }
             );
         if (photo) {
-            products.photo.data = fs.readFileSync(photo.path);
-            products.photo.contentType = photo.type;
+            venues.photo.data = fs.readFileSync(photo.path);
+            venues.photo.contentType = photo.type;
         }
-        await products.save();
-        res.status(201).send({ success: true, message: "Product updated successfully", products });
+        await venues.save();
+        res.status(201).send({ success: true, message: "Venue updated successfully", venues });
     }catch(error){
         console.log(error);
-        res.status(500).send({success: false, message: "Error in updating product", error});
+        res.status(500).send({success: false, message: "Error in updating venue", error});
     }
 };
     
-//filter product
-export const productFiltersControlller = async(req, res) => {
+//filter venue
+export const venueFiltersControlller = async(req, res) => {
     try{
         const { checked, radio} = req.body;
         let args = {};
         if(checked.length > 0) args.category = checked;
         if(radio.length) args.price = {$gte: radio[0], $lte: radio[1]};
-        const products = await productModel.find(args)
+        const venues = await venueModel.find(args)
     
-         res.status(200).send({success: true, message: "Filtered products", products});   
+         res.status(200).send({success: true, message: "Filtered venues", venues});   
     }catch(error){
         console.log(error);
-        res.status(500).send({success: false, message: "Error in filtering product", error});
+        res.status(500).send({success: false, message: "Error in filtering venue", error});
     }
 };
 
-//product count
-export const productCountController = async(req, res) => {
+//venue count
+export const venueCountController = async(req, res) => {
     try{
-        const total = await productModel.find({}).estimatedDocumentCount();
-        res.status(200).send({success: true, message: "Product count", total});
+        const total = await venueModel.find({}).estimatedDocumentCount();
+        res.status(200).send({success: true, message: "Venue count", total});
     }catch(error){
         console.log(error);
-        res.status(500).send({success: false, message: "Error in getting product count", error});
+        res.status(500).send({success: false, message: "Error in getting venue count", error});
     }
 };
 
-//product list based on page
-export const productListController = async(req, res) => {
+//venue list based on page
+export const venueListController = async(req, res) => {
     try{
         const perPage = 3;
         const page = req.params.page? req.params.page : 1;
-        const products = await productModel
+        const venues = await venueModel
         .find({})
         .select("-photo")
         .skip((page - 1) * perPage)
         .limit(perPage)
         .sort({createdAt: -1});
-        res.status(200).send({success: true, message: "Product list", products});
+        res.status(200).send({success: true, message: "Venue list", venues});
     }catch(error){
         console.log(error);
-        res.status(500).send({success: false, message: "Error in getting product list", error});
+        res.status(500).send({success: false, message: "Error in getting venue list", error});
     }
 };
 
-//search product
-export const searchProductController = async(req, res) => {
+//search venue
+export const searchVenueController = async(req, res) => {
     try{
         const {keyword} = req.params;
-        const results = await productModel.find
+        const results = await venueModel.find
         ({
            $or: [
             {name: {$regex: keyword, $options: "i"}},
@@ -209,34 +209,34 @@ export const searchProductController = async(req, res) => {
     }
 };
 
-//related product
-export const relatedProductController = async(req, res) => {
+//related venue
+export const relatedVenueController = async(req, res) => {
     try{
         const {pid, cid} = req.params;
-        const products = await  productModel
+        const venues = await venueModel
             .find({_id: {$ne: pid}, category: cid})
             .select('-photo')
             .limit(3)
             .populate('category');
 
-            res.status(200).send({success: true, message: "Related products", products});
+            res.status(200).send({success: true, message: "Related venues", venues});
         
     }catch(error){
         console.log(error);
-        res.status(500).send({success: false, message: "Error in getting related products", error});
+        res.status(500).send({success: false, message: "Error in getting related venues", error});
     }
 };
 
-//category wise product
-export const productCategoryController = async(req, res) => {
+//category wise venue
+export const venueCategoryController = async(req, res) => {
     try{
         const category = await categoryModel.findOne({slug: req.params.slug});
-        const products = await productModel.find({category}).populate("category");
+        const venues = await venueModel.find({category}).populate("category");
 
-        res.status(200).send({success: true, message: "Category wise products", products, category});
+        res.status(200).send({success: true, message: "Category wise venues", venues, category});
     }catch(error){
         console.log(error);
-        res.status(500).send({success: false, message: "Error in getting category wise products", error});
+        res.status(500).send({success: false, message: "Error in getting category wise venues", error});
     }
 };
 
@@ -274,4 +274,3 @@ export const paymentController = async(req, res) => {
         res.status(500).send({success: false, message: "Error in payment", error});
     }
 };
-

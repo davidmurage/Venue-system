@@ -11,7 +11,7 @@ const BookingSchema = new mongoose.Schema({
   },
   venue: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Products",
+    ref: "Venues",
     required: false,
   },
   date: {
@@ -24,7 +24,7 @@ const BookingSchema = new mongoose.Schema({
   },
   user:{
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
+    ref: 'users',
     required: false
   }
   

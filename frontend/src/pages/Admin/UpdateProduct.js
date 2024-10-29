@@ -19,11 +19,11 @@ const UpdateProduct = () => {
   const [photo, setPhoto] = useState("");
   const [id, setId] = useState("");
 
-  //get single product
+  //get single venue
   const getSingleProduct = async () => {
     try {
       const { data } = await axios.get(
-        `/api/v1/product/get-product/${params.slug}`
+        `/api/v1/venue/get-venue/${params.slug}`
       );
       setName(data.product.name);
       setId(data.product._id);
@@ -56,7 +56,7 @@ const UpdateProduct = () => {
     getAllCategory();
   }, []);
 
-  //create product function
+  //create venue function
   const handleUpdate = async (e) => {
     e.preventDefault();
     try {
@@ -68,13 +68,13 @@ const UpdateProduct = () => {
       photo && productData.append("photo", photo);
       productData.append("category", category);
       const { data } = axios.put(
-        `/api/v1/product/update-product/${id}`,
+        `/api/v1/venue/update-venue/${id}`,
         productData
       );
       if (data?.success) {
         toast.error(data?.message);
       } else {
-        toast.success("Product Updated Successfully");
+        toast.success("Venue Updated Successfully");
         navigate("/dashboard/admin/products");
       }
     } catch (error) {
@@ -83,13 +83,13 @@ const UpdateProduct = () => {
     }
   };
 
-  //delete a product
+  //delete a venue
   const handleDelete = async () => {
     try {
-      let answer = window.prompt("Are You Sure want to delete this product ? ");
+      let answer = window.prompt("Are You Sure want to delete this Venue ? ");
       if (!answer) return;
       const { data } = await axios.delete(
-        `/api/v1/product/delete-product/${id}`
+        `/api/v1/venue/delete-venue/${id}`
       );
       toast.success("Product Deleted Successfully");
       navigate("/dashboard/admin/products");
@@ -106,7 +106,7 @@ const UpdateProduct = () => {
             <AdminMenu />
           </div>
           <div className="col-md-9">
-            <h1>Update Product</h1>
+            <h1>Update Venue</h1>
             <div className="m-1 w-75">
               <Select
                 bordered={false}
@@ -150,7 +150,7 @@ const UpdateProduct = () => {
                 ) : (
                   <div className="text-center">
                     <img
-                      src={`/api/v1/product/product-photo/${id}`}
+                      src={`/api/v1/venue/benue-photo/${id}`}
                       alt="product_photo"
                       height={"200px"}
                       className="img img-responsive"
@@ -198,12 +198,12 @@ const UpdateProduct = () => {
               
               <div className="mb-3">
                 <button className="btn btn-primary" onClick={handleUpdate}>
-                  UPDATE PRODUCT
+                  UPDATE VENUE
                 </button>
               </div>
               <div className="mb-3">
                 <button className="btn btn-danger" onClick={handleDelete}>
-                  DELETE PRODUCT
+                  DELETE VENUE
                 </button>
               </div>
             </div>

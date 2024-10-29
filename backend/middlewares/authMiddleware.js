@@ -17,7 +17,7 @@ export const requireSignIn = async(req, res, next) => {
 export const isAdmin = async (req, res, next) => {
     try {
       console.log(req.user);
-      const id = req.user.id;
+      const id = req.user._id;
       const user = await userModel.findById({ _id: id});
       console.log(user);
       if (user.role !== 1) {

@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const productSchema = new mongoose.Schema({
+const venueSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
@@ -31,10 +31,6 @@ const productSchema = new mongoose.Schema({
         data: Buffer,
         contentType: String,
     },
-   
-   
-},
+}, {timestamps: true});
 
-{timestamps: true});
-
-export default mongoose.model('Products', productSchema);
+export default mongoose.model('Venues', venueSchema);

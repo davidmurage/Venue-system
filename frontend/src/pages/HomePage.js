@@ -36,11 +36,11 @@ const HomePage = () => {
   
   }, []);
 
-  //get all products
+  //get all venues
   const getAllProducts = async () => {
     try {
       setLoading(true);
-      const { data } = await axios.get(`/api/v1/product/product-list/${page}`);
+      const { data } = await axios.get(`/api/v1/venue/venue-list/${page}`);
       setLoading(false);
       setProducts(data.products);
     } catch (error) {
@@ -49,14 +49,14 @@ const HomePage = () => {
     }
   };
 
-  //product count
+  //Venue count
   const getTotal = async () => {
     try{
-      const {data} = await axios.get("/api/v1/product/product-count");
+      const {data} = await axios.get("/api/v1/venue/venue-count");
       setTotal(data?.total);
     }catch(error){
       console.log(error);
-      toast.error("Something went wrong in getting product count");
+      toast.error("Something went wrong in getting venue count");
       }
   }
 
@@ -65,11 +65,11 @@ const HomePage = () => {
     loadMore();
   }, [page] )
 
-  //load more products
+  //load more venues
   const loadMore = async () => {
     try{
       setLoading(true);
-      const {data} = await axios.get(`/api/v1/product/product-list/${page}`);
+      const {data} = await axios.get(`/api/v1/venue/venue-list/${page}`);
       setLoading(false);
       setProducts([...products, ...data?.products]);
     }catch(error){
@@ -101,11 +101,11 @@ const HomePage = () => {
   //get filtered products
 const filterProduct = async () => {
   try{
-    const {data} = await axios.post("/api/v1/product/product-filters", {checked, radio});
+    const {data} = await axios.post("/api/v1/venue/venue-filters", {checked, radio});
     setProducts(data?.products);
   }catch(error){
     console.log(error);
-    toast.error("Something went wrong in filtering products");
+    toast.error("Something went wrong in filtering venues");
   }
 };
 
@@ -160,7 +160,7 @@ const filterProduct = async () => {
           {products?.map((p) => (
             <div className="card m-2"   key={p._id}>
               <img
-                src={`/api/v1/product/product-photo/${p._id}`}
+                src={`/api/v1/venue/venue-photo/${p._id}`}
                 className="card-img-top"
                 alt={p.name}
               />
