@@ -12,7 +12,7 @@ const HomePage = () => {
   const navigate = useNavigate();
   const [venues, setVenues] = useState([]);
   const [categories, setCategories] = useState([]);
-  const [checked, setChecked] = useState([]);
+  const [checkedCategories, setCheckedCategories] = useState([]);
   const [radio, setRadio] = useState([]);
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
@@ -71,15 +71,20 @@ const HomePage = () => {
   const loadMore = () => setPage(page + 1);
 
   // Handle category filter
-  const handleCategoryFilter = (checked, id) => {
-    const updatedChecked = checked ? [...checked, id] : checked.filter(c => c !== id);
-    setChecked(updatedChecked);
+  const handleCategoryFilter = (isChecked, id) => {
+    let updatedCheckedCategories = [...checkedCategories];
+    if (isChecked) {
+      updatedCheckedCategories.push(id);
+    } else {
+      updatedCheckedCategories = updatedCheckedCategories.filter(c => c !== id);
+    }
+    setCheckedCategories(updatedCheckedCategories);
   };
 
   // Filter venues by selected categories and price
   const filterVenues = async () => {
     try {
-      const { data } = await axios.post("/api/v1/venue/venue-filters", { checked, radio });
+      const { data } = await axios.post("/api/v1/venue/venue-filters", { checked: checkedCategories, radio });
       setVenues(data.venues);
     } catch (error) {
       console.log(error);
@@ -88,12 +93,20 @@ const HomePage = () => {
   };
 
   useEffect(() => {
-    if (!checked.length && !radio.length) {
+    if (!checkedCategories.length && !radio.length) {
       getVenues(true); // Reset to all venues if no filters
     } else {
       filterVenues();
     }
-  }, [checked, radio]);
+  }, [checkedCategories, radio]);
+
+  // Reset filters
+  const resetFilters = () => {
+    setCheckedCategories([]);
+    setRadio([]);
+    setPage(1); // Reset the page to 1
+    getVenues(true); // Fetch all venues again
+  };
 
   return (
     <Layout title="All Venues - Best of all time offers">
@@ -104,6 +117,7 @@ const HomePage = () => {
             {categories.map((category) => (
               <Checkbox
                 key={category._id}
+                checked={checkedCategories.includes(category._id)}
                 onChange={(e) => handleCategoryFilter(e.target.checked, category._id)}
               >
                 {category.name}
@@ -113,7 +127,7 @@ const HomePage = () => {
 
           <h4 className="text-center mt-4">Filter By Price</h4>
           <div className="d-flex flex-column">
-            <Radio.Group onChange={(e) => setRadio(e.target.value)}>
+            <Radio.Group value={radio} onChange={(e) => setRadio(e.target.value)}>
               {Prices.map((price) => (
                 <div key={price._id}>
                   <Radio value={price.array}>{price.name}</Radio>
@@ -125,11 +139,7 @@ const HomePage = () => {
           <div className="d-flex flex-column">
             <button
               className="btn btn-danger"
-              onClick={() => {
-                setChecked([]);
-                setRadio([]);
-                getVenues(true); // Reset venues on filter reset
-              }}
+              onClick={resetFilters}
             >
               RESET FILTERS
             </button>
@@ -162,7 +172,7 @@ const HomePage = () => {
                   <div className="card-name-price">
                     <button
                       className="btn btn-info ms-1"
-                      onClick={() => navigate(`/product/${venue.slug}`)}
+                      onClick={() => navigate(`/venue/${venue.slug}`)}
                     >
                       More Details
                     </button>
