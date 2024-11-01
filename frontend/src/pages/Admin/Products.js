@@ -4,48 +4,54 @@ import Layout from "../../components/Layout/Layout";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
-const Products = () => {
-  const [products, setProducts] = useState([]);
 
-  //getall products
-  const getAllProducts = async () => {
+const Venues = () => {
+  const [venues, setVenues] = useState([]);
+
+  // Get all venues
+  const getAllVenues = async () => {
     try {
       const { data } = await axios.get("/api/v1/venue/get-venue");
-      setProducts(data.products);
+      if (data?.success) {
+        setVenues(data.venues);
+      } else {
+        toast.error("Failed to fetch venues");
+      }
     } catch (error) {
       console.log(error);
-      toast.error("Someething Went Wrong");
+      toast.error("Something went wrong while fetching venues");
     }
   };
 
-  //lifecycle method
+  // Lifecycle method to fetch venues
   useEffect(() => {
-    getAllProducts();
+    getAllVenues();
   }, []);
+
   return (
     <Layout>
       <div className="row dashboard">
         <div className="col-md-3">
           <AdminMenu />
         </div>
-        <div className="col-md-9 ">
+        <div className="col-md-9">
           <h1 className="text-center">All Venues List</h1>
           <div className="d-flex flex-wrap">
-            {products?.map((p) => (
+            {venues.map((venue) => (
               <Link
-                key={p._id}
-                to={`/dashboard/admin/product/${p.slug}`}
-                className="product-link"
+                key={venue._id}
+                to={`/dashboard/admin/product/${venue.slug}`}
+                className="venue-link"
               >
                 <div className="card m-2" style={{ width: "18rem" }}>
                   <img
-                    src={`/api/v1/venue/venue-photo/${p._id}`}
+                    src={`/api/v1/venue/venue-photo/${venue._id}`}
                     className="card-img-top"
-                    alt={p.name}
+                    alt={venue.name}
                   />
                   <div className="card-body">
-                    <h5 className="card-title">{p.name}</h5>
-                    <p className="card-text">{p.description}</p>
+                    <h5 className="card-title">{venue.name}</h5>
+                    <p className="card-text">{venue.description}</p>
                   </div>
                 </div>
               </Link>
@@ -57,4 +63,4 @@ const Products = () => {
   );
 };
 
-export default Products;
+export default Venues;

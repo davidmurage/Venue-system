@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from 'react'
-import Layout from '../components/Layout/Layout'
+import React, { useState, useEffect } from 'react';
+import Layout from '../components/Layout/Layout';
 import { Prices } from "../components/Prices";
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -10,213 +10,182 @@ import "../styles/Homepage.css";
 
 const HomePage = () => {
   const navigate = useNavigate();
-  const [products,setProducts] = useState([]);
+  const [venues, setVenues] = useState([]);
   const [categories, setCategories] = useState([]);
   const [checked, setChecked] = useState([]);
-  const [radio, setRadio] = useState(0);
+  const [radio, setRadio] = useState([]);
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
 
-  //get all category
-  const getAllCategory = async () => {
+  // Get all categories
+  const getAllCategories = async () => {
     try {
       const { data } = await axios.get("/api/v1/category/get-category");
       if (data?.success) {
-        setCategories(data?.category);
+        setCategories(data.category);
       }
     } catch (error) {
       console.log(error);
-      toast.error("Something wwent wrong in getting catgeory");
+      toast.error("Something went wrong in fetching categories");
     }
   };
-  useEffect(() => {
-    getAllCategory();
-    getTotal();
-  
-  }, []);
 
-  //get all venues
-  const getAllProducts = async () => {
+  // Get all venues for the current page
+  const getVenues = async (reset = false) => {
     try {
       setLoading(true);
       const { data } = await axios.get(`/api/v1/venue/venue-list/${page}`);
       setLoading(false);
-      setProducts(data.products);
+      setVenues(reset ? data.venues : [...venues, ...data.venues]);
     } catch (error) {
       setLoading(false);
       console.log(error);
+      toast.error("Something went wrong in fetching venues");
     }
   };
 
-  //Venue count
-  const getTotal = async () => {
-    try{
-      const {data} = await axios.get("/api/v1/venue/venue-count");
-      setTotal(data?.total);
-    }catch(error){
+  // Get total venue count
+  const getTotalVenues = async () => {
+    try {
+      const { data } = await axios.get("/api/v1/venue/venue-count");
+      setTotal(data.total);
+    } catch (error) {
       console.log(error);
-      toast.error("Something went wrong in getting venue count");
-      }
-  }
-
-  useEffect(() => {
-    if (page === 1) return;
-    loadMore();
-  }, [page] )
-
-  //load more venues
-  const loadMore = async () => {
-    try{
-      setLoading(true);
-      const {data} = await axios.get(`/api/v1/venue/venue-list/${page}`);
-      setLoading(false);
-      setProducts([...products, ...data?.products]);
-    }catch(error){
-      console.log(error);
-      setLoading(false);
+      toast.error("Something went wrong in fetching venue count");
     }
-  }
-
-  //filter by category
-  const handleFilter = async (value, id) =>{
-    let all = [...checked];
-    if(value){
-      all.push(id);
-  }else{
-    all = all.filter((c) => c !== id);
-  }
-  setChecked(all);
-};
+  };
 
   useEffect(() => {
-    if(!checked.length || !radio.length) getAllProducts();
-  }, [checked.length, radio.length]);
+    getAllCategories();
+    getTotalVenues();
+    getVenues(true); // Fetch initial venues
+  }, []);
 
+  // Load more venues when `page` changes
+  useEffect(() => {
+    if (page > 1) getVenues();
+  }, [page]);
+
+  // Load more venues handler
+  const loadMore = () => setPage(page + 1);
+
+  // Handle category filter
+  const handleCategoryFilter = (checked, id) => {
+    const updatedChecked = checked ? [...checked, id] : checked.filter(c => c !== id);
+    setChecked(updatedChecked);
+  };
+
+  // Filter venues by selected categories and price
+  const filterVenues = async () => {
+    try {
+      const { data } = await axios.post("/api/v1/venue/venue-filters", { checked, radio });
+      setVenues(data.venues);
+    } catch (error) {
+      console.log(error);
+      toast.error("Something went wrong in filtering venues");
+    }
+  };
 
   useEffect(() => {
-    if(checked.length || radio.length) filterProduct();
+    if (!checked.length && !radio.length) {
+      getVenues(true); // Reset to all venues if no filters
+    } else {
+      filterVenues();
+    }
   }, [checked, radio]);
 
-  //get filtered products
-const filterProduct = async () => {
-  try{
-    const {data} = await axios.post("/api/v1/venue/venue-filters", {checked, radio});
-    setProducts(data?.products);
-  }catch(error){
-    console.log(error);
-    toast.error("Something went wrong in filtering venues");
-  }
-};
-
   return (
-    <Layout title={"All Venues - Best of all time offers "}>
-    {/* banner image */}
-    
-   {/* <img
-      src="/images/banner.png"
-      className="banner-img"
-      alt="bannerimage"
-      width={"100%"}
-    />*/}
-
-    {/* banner image */}
-    <div className="container-fluid row mt-3 home-page">
-      <div className="col-md-3 filters">
-        <h4 className="text-center">Filter By Category</h4>
-        <div className="d-flex flex-column">
-          {categories?.map((c) => (
-            <Checkbox
-              key={c._id}
-              onChange={(e) => handleFilter(e.target.checked, c._id)}
-            >
-              {c.name}
-            </Checkbox>
-          ))}
-        </div>
-        {/* price filter */}
-        <h4 className="text-center mt-4">Filter By Price</h4>
-        <div className="d-flex flex-column">
-          <Radio.Group onChange={(e) => setRadio(e.target.value)}>
-            {Prices?.map((p) => (
-              <div key={p._id}>
-                <Radio value={p.array}>{p.name}</Radio>
-              </div>
+    <Layout title="All Venues - Best of all time offers">
+      <div className="container-fluid row mt-3 home-page">
+        <div className="col-md-3 filters">
+          <h4 className="text-center">Filter By Category</h4>
+          <div className="d-flex flex-column">
+            {categories.map((category) => (
+              <Checkbox
+                key={category._id}
+                onChange={(e) => handleCategoryFilter(e.target.checked, category._id)}
+              >
+                {category.name}
+              </Checkbox>
             ))}
-          </Radio.Group>
-        </div>
-        <div className="d-flex flex-column">
-          <button
-            className="btn btn-danger"
-            onClick={() => window.location.reload()}
-          >
-            RESET FILTERS
-          </button>
-        </div>
-      </div>
-      <div className="col-md-9 ">
-        <h1 className="text-center"> All Venues </h1>
-        <div className="d-flex flex-wrap">
-          {products?.map((p) => (
-            <div className="card m-2"   key={p._id}>
-              <img
-                src={`/api/v1/venue/venue-photo/${p._id}`}
-                className="card-img-top"
-                alt={p.name}
-              />
-              <div className="card-body">
-                <div className="card-name-price">
-                  <h5 className="card-title">{p.name}</h5>
-                  <h5 className="card-title card-price">
-                    {p.price.toLocaleString("en-US", {
-                      style: "currency",
-                      currency: "KSH",
-                    })}
-                  </h5>
-                </div>
-                <p className="card-text ">
-                  {p.description.substring(0, 60)}...
-                </p>
-                <div className="card-name-price">
-                  <button
-                    className="btn btn-info ms-1"
-                    onClick={() => navigate(`/product/${p.slug}`)}
-                  >
+          </div>
 
-                    More Details
-
-                  </button>
-                  <Link to={'/book/:slug'}><button className="btn btn-dark ms-2">Book Now</button></Link>
-                 
+          <h4 className="text-center mt-4">Filter By Price</h4>
+          <div className="d-flex flex-column">
+            <Radio.Group onChange={(e) => setRadio(e.target.value)}>
+              {Prices.map((price) => (
+                <div key={price._id}>
+                  <Radio value={price.array}>{price.name}</Radio>
                 </div>
-              </div>
-            </div>
-          ))}
-        </div>
-        <div className="m-2 p-3">
-          {products && products.length < total && (
+              ))}
+            </Radio.Group>
+          </div>
+
+          <div className="d-flex flex-column">
             <button
-              className="btn loadmore"
-              onClick={(e) => {
-                e.preventDefault();
-                setPage(page + 1);
+              className="btn btn-danger"
+              onClick={() => {
+                setChecked([]);
+                setRadio([]);
+                getVenues(true); // Reset venues on filter reset
               }}
             >
-              {loading ? (
-                "Loading ..."
-              ) : (
-                <>
-                  {" "}
-                  Loadmore <AiOutlineReload />
-                </>
-              )}
+              RESET FILTERS
             </button>
-          )}
+          </div>
+        </div>
+
+        <div className="col-md-9">
+          <h1 className="text-center">All Venues</h1>
+          <div className="d-flex flex-wrap">
+            {venues.map((venue) => (
+              <div className="card m-2" key={venue._id}>
+                <img
+                  src={`/api/v1/venue/venue-photo/${venue._id}`}
+                  className="card-img-top"
+                  alt={venue.name}
+                />
+                <div className="card-body">
+                  <div className="card-name-price">
+                    <h5 className="card-title">{venue.name}</h5>
+                    <h5 className="card-title card-price">
+                      {venue.price.toLocaleString("en-US", {
+                        style: "currency",
+                        currency: "KSH",
+                      })}
+                    </h5>
+                  </div>
+                  <p className="card-text">
+                    {venue.description.substring(0, 60)}...
+                  </p>
+                  <div className="card-name-price">
+                    <button
+                      className="btn btn-info ms-1"
+                      onClick={() => navigate(`/product/${venue.slug}`)}
+                    >
+                      More Details
+                    </button>
+                    <Link to={`/book/${venue.slug}`}>
+                      <button className="btn btn-dark ms-2">Book Now</button>
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="m-2 p-3">
+            {venues.length < total && (
+              <button className="btn loadmore" onClick={loadMore}>
+                {loading ? "Loading ..." : <>Load More <AiOutlineReload /></>}
+              </button>
+            )}
+          </div>
         </div>
       </div>
-    </div>
-  </Layout>
-  )
-}
+    </Layout>
+  );
+};
 
-export default HomePage
+export default HomePage;

@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
-import Layout from "./../../components/Layout/Layout";
-import AdminMenu from "./../../components/Layout/AdminMenu";
+import Layout from "../../components/Layout/Layout";
+import AdminMenu from "../../components/Layout/AdminMenu";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { Select } from "antd";
 import { useNavigate, useParams } from "react-router-dom";
 const { Option } = Select;
 
-const UpdateProduct = () => {
+const UpdateVenue = () => {
   const navigate = useNavigate();
   const params = useParams();
   const [categories, setCategories] = useState([]);
@@ -19,87 +19,93 @@ const UpdateProduct = () => {
   const [photo, setPhoto] = useState("");
   const [id, setId] = useState("");
 
-  //get single venue
-  const getSingleProduct = async () => {
+  // Get single venue
+  const getSingleVenue = async () => {
     try {
-      const { data } = await axios.get(
-        `/api/v1/venue/get-venue/${params.slug}`
-      );
-      setName(data.product.name);
-      setId(data.product._id);
-      setDescription(data.product.description);
-      setPrice(data.product.price);
-      setQuantity(data.product.quantity);
-      setCategory(data.product.category._id);
+      const { data } = await axios.get(`/api/v1/venue/get-venue/${params.slug}`);
+      if (data?.success) {
+        setName(data.venue.name);
+        setId(data.venue._id);
+        setDescription(data.venue.description);
+        setPrice(data.venue.price);
+        setQuantity(data.venue.quantity);
+        setCategory(data.venue.category._id);
+      } else {
+        toast.error("Error fetching venue details");
+      }
     } catch (error) {
       console.log(error);
+      toast.error("Something went wrong while fetching the venue");
     }
   };
+
   useEffect(() => {
-    getSingleProduct();
+    getSingleVenue();
     //eslint-disable-next-line
   }, []);
-  //get all category
-  const getAllCategory = async () => {
+
+  // Get all categories
+  const getAllCategories = async () => {
     try {
       const { data } = await axios.get("/api/v1/category/get-category");
       if (data?.success) {
-        setCategories(data?.category);
+        setCategories(data.category);
       }
     } catch (error) {
       console.log(error);
-      toast.error("Something wwent wrong in getting catgeory");
+      toast.error("Something went wrong in getting categories");
     }
   };
 
   useEffect(() => {
-    getAllCategory();
+    getAllCategories();
   }, []);
 
-  //create venue function
+  // Update venue function
   const handleUpdate = async (e) => {
     e.preventDefault();
     try {
-      const productData = new FormData();
-      productData.append("name", name);
-      productData.append("description", description);
-      productData.append("price", price);
-      productData.append("quantity", quantity);
-      photo && productData.append("photo", photo);
-      productData.append("category", category);
-      const { data } = axios.put(
-        `/api/v1/venue/update-venue/${id}`,
-        productData
-      );
+      const venueData = new FormData();
+      venueData.append("name", name);
+      venueData.append("description", description);
+      venueData.append("price", price);
+      venueData.append("quantity", quantity);
+      photo && venueData.append("photo", photo);
+      venueData.append("category", category);
+
+      const { data } = await axios.put(`/api/v1/venue/update-venue/${id}`, venueData);
       if (data?.success) {
-        toast.error(data?.message);
+        toast.success("Venue updated successfully");
+        navigate("/dashboard/admin/venues");
       } else {
-        toast.success("Venue Updated Successfully");
-        navigate("/dashboard/admin/products");
+        toast.error(data?.message);
       }
     } catch (error) {
       console.log(error);
-      toast.error("something went wrong");
+      toast.error("Something went wrong while updating the venue");
     }
   };
 
-  //delete a venue
+  // Delete venue
   const handleDelete = async () => {
     try {
-      let answer = window.prompt("Are You Sure want to delete this Venue ? ");
+      let answer = window.confirm("Are you sure you want to delete this venue?");
       if (!answer) return;
-      const { data } = await axios.delete(
-        `/api/v1/venue/delete-venue/${id}`
-      );
-      toast.success("Product Deleted Successfully");
-      navigate("/dashboard/admin/products");
+      const { data } = await axios.delete(`/api/v1/venue/delete-venue/${id}`);
+      if (data?.success) {
+        toast.success("Venue deleted successfully");
+        navigate("/dashboard/admin/venues");
+      } else {
+        toast.error(data?.message);
+      }
     } catch (error) {
       console.log(error);
-      toast.error("Something went wrong");
+      toast.error("Something went wrong while deleting the venue");
     }
   };
+
   return (
-    <Layout title={"Dashboard - Create Product"}>
+    <Layout title={"Dashboard - Update Venue"}>
       <div className="container-fluid m-3 p-3">
         <div className="row">
           <div className="col-md-3">
@@ -114,17 +120,16 @@ const UpdateProduct = () => {
                 size="large"
                 showSearch
                 className="form-select mb-3"
-                onChange={(value) => {
-                  setCategory(value);
-                }}
+                onChange={(value) => setCategory(value)}
                 value={category}
               >
-                {categories?.map((c) => (
+                {categories.map((c) => (
                   <Option key={c._id} value={c._id}>
                     {c.name}
                   </Option>
                 ))}
               </Select>
+
               <div className="mb-3">
                 <label className="btn btn-outline-secondary col-md-12">
                   {photo ? photo.name : "Upload Photo"}
@@ -137,12 +142,13 @@ const UpdateProduct = () => {
                   />
                 </label>
               </div>
+
               <div className="mb-3">
                 {photo ? (
                   <div className="text-center">
                     <img
                       src={URL.createObjectURL(photo)}
-                      alt="product_photo"
+                      alt="venue_photo"
                       height={"200px"}
                       className="img img-responsive"
                     />
@@ -150,19 +156,20 @@ const UpdateProduct = () => {
                 ) : (
                   <div className="text-center">
                     <img
-                      src={`/api/v1/venue/benue-photo/${id}`}
-                      alt="product_photo"
+                      src={`/api/v1/venue/venue-photo/${id}`}
+                      alt="venue_photo"
                       height={"200px"}
                       className="img img-responsive"
                     />
                   </div>
                 )}
               </div>
+
               <div className="mb-3">
                 <input
                   type="text"
                   value={name}
-                  placeholder="write a name"
+                  placeholder="Enter venue name"
                   className="form-control"
                   onChange={(e) => setName(e.target.value)}
                 />
@@ -171,7 +178,7 @@ const UpdateProduct = () => {
                 <textarea
                   type="text"
                   value={description}
-                  placeholder="write a description"
+                  placeholder="Enter venue description"
                   className="form-control"
                   onChange={(e) => setDescription(e.target.value)}
                 />
@@ -181,7 +188,7 @@ const UpdateProduct = () => {
                 <input
                   type="number"
                   value={price}
-                  placeholder="write a Price"
+                  placeholder="Enter venue price"
                   className="form-control"
                   onChange={(e) => setPrice(e.target.value)}
                 />
@@ -190,12 +197,12 @@ const UpdateProduct = () => {
                 <input
                   type="number"
                   value={quantity}
-                  placeholder="write a quantity"
+                  placeholder="Enter venue quantity"
                   className="form-control"
                   onChange={(e) => setQuantity(e.target.value)}
                 />
               </div>
-              
+
               <div className="mb-3">
                 <button className="btn btn-primary" onClick={handleUpdate}>
                   UPDATE VENUE
@@ -214,4 +221,4 @@ const UpdateProduct = () => {
   );
 };
 
-export default UpdateProduct;
+export default UpdateVenue;
