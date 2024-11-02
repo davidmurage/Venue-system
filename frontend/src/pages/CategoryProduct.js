@@ -3,21 +3,21 @@ import Layout from "../components/Layout/Layout";
 import { useParams, useNavigate } from "react-router-dom";
 import "../styles/CategoryProductStyles.css";
 import axios from "axios";
-const CategoryProduct = () => {
+
+const CategoryVenue = () => {
   const params = useParams();
   const navigate = useNavigate();
-  const [products, setProducts] = useState([]);
-  const [category, setCategory] = useState([]);
+  const [venues, setVenues] = useState([]);
+  const [category, setCategory] = useState({});
 
   useEffect(() => {
-    if (params?.slug) getPrductsByCat();
+    if (params?.slug) getVenuesByCategory();
   }, [params?.slug]);
-  const getPrductsByCat = async () => {
+
+  const getVenuesByCategory = async () => {
     try {
-      const { data } = await axios.get(
-        `/api/v1/venue/venue-category/${params.slug}`
-      );
-      setProducts(data?.products);
+      const { data } = await axios.get(`/api/v1/venue/venue-category/${params.slug}`);
+      setVenues(data?.venues); // Update to 'venues' for consistent naming
       setCategory(data?.category);
     } catch (error) {
       console.log(error);
@@ -28,68 +28,42 @@ const CategoryProduct = () => {
     <Layout>
       <div className="container mt-3 category">
         <h4 className="text-center">Category - {category?.name}</h4>
-        <h6 className="text-center">{products?.length} result found </h6>
+        <h6 className="text-center">{venues?.length} result(s) found</h6>
         <div className="row">
           <div className="col-md-9 offset-1">
             <div className="d-flex flex-wrap">
-              {products?.map((p) => (
-                <div className="card m-2" key={p._id}>
+              {venues?.map((venue) => (
+                <div className="card m-2" key={venue._id}>
                   <img
-                    src={`/api/v1/venue/venue-photo/${p._id}`}
+                    src={`/api/v1/venue/venue-photo/${venue._id}`}
                     className="card-img-top"
-                    alt={p.name}
+                    alt={venue.name}
                   />
                   <div className="card-body">
                     <div className="card-name-price">
-                      <h5 className="card-title">{p.name}</h5>
+                      <h5 className="card-title">{venue.name}</h5>
                       <h5 className="card-title card-price">
-                        {p.price.toLocaleString("en-US", {
+                        {venue.price.toLocaleString("en-US", {
                           style: "currency",
                           currency: "USD",
                         })}
                       </h5>
                     </div>
-                    <p className="card-text ">
-                      {p.description.substring(0, 60)}...
+                    <p className="card-text">
+                      {venue.description.substring(0, 60)}...
                     </p>
                     <div className="card-name-price">
                       <button
                         className="btn btn-info ms-1"
-                        onClick={() => navigate(`/product/${p.slug}`)}
+                        onClick={() => navigate(`/venue/${venue.slug}`)}
                       >
                         More Details
                       </button>
-                      {/* <button
-                    className="btn btn-dark ms-1"
-                    onClick={() => {
-                      setCart([...cart, p]);
-                      localStorage.setItem(
-                        "cart",
-                        JSON.stringify([...cart, p])
-                      );
-                      toast.success("Item Added to cart");
-                    }}
-                  >
-                    ADD TO CART
-                  </button> */}
                     </div>
                   </div>
                 </div>
               ))}
             </div>
-            {/* <div className="m-2 p-3">
-            {products && products.length < total && (
-              <button
-                className="btn btn-warning"
-                onClick={(e) => {
-                  e.preventDefault();
-                  setPage(page + 1);
-                }}
-              >
-                {loading ? "Loading ..." : "Loadmore"}
-              </button>
-            )}
-          </div> */}
           </div>
         </div>
       </div>
@@ -97,4 +71,4 @@ const CategoryProduct = () => {
   );
 };
 
-export default CategoryProduct;
+export default CategoryVenue;

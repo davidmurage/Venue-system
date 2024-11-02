@@ -16,7 +16,7 @@ const PaymentForm = () => {
 
     try {
       // Call the backend to initiate the MPesa payment
-      const response = await axios.post('/api/v1/product/payment', {
+      const response = await axios.post('/api/v1/venue/payment', {
         phoneNumber,
         amount,
       });

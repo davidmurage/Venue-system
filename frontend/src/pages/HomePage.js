@@ -172,7 +172,7 @@ const HomePage = () => {
                   <div className="card-name-price">
                     <button
                       className="btn btn-info ms-1"
-                      onClick={() => navigate(`/venue/${venue.slug}`)}
+                      onClick={() => navigate(`/product/${venue.slug}`)}
                     >
                       More Details
                     </button>

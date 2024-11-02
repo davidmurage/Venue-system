@@ -8,18 +8,24 @@ const BookingForm = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    venue: '',
-    slug: '',
+    venueId: '', // Updated to align with controller expectations
     date: '',
     time: '',
   });
   const navigate = useNavigate();
-  const { slug } = useParams(); // Assuming slug identifies the venue
+  const { slug } = useParams();
 
-  useEffect(()=>{
-    setFormData((prevData) =>({...prevData, venue:slug}))
-  }
-  ,[slug])
+  useEffect(() => {
+    const fetchVenueId = async () => {
+      try {
+        const { data } = await axios.get(`/api/v1/venue/get-venue/${slug}`);
+        setFormData((prevData) => ({ ...prevData, venueId: data.venue._id }));
+      } catch (error) {
+        toast.error('Failed to load venue details');
+      }
+    };
+    if (slug) fetchVenueId();
+  }, [slug]);
 
   const handleChange = (e) => {
     setFormData({
@@ -30,14 +36,12 @@ const BookingForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
     try {
-      const res = await axios.post('/api/v1/booking/create-bookings', formData, {slug});// Modify API endpoint accordingly
-      if(res.status === 200 || res.data.success){
+      const res = await axios.post('/api/v1/booking/create-bookings', formData); // Adjusted endpoint and payload
+      if (res.status === 201 || res.data.success) {
         toast.success('Booking successful');
-        navigate('/payment'); // Redirect to myBookings 
+        navigate('/dashboard/user/myBookings'); // Redirect to myBookings 
       }
-     
     } catch (error) {
       toast.error('Booking failed');
     }
@@ -76,7 +80,7 @@ const BookingForm = () => {
               type="text"
               className="form-control"
               name="venue"
-              value={slug} // Pre-fill with venue from URL
+              value={slug} // Display slug, but venueId is sent in formData
               onChange={handleChange}
               required
               readOnly

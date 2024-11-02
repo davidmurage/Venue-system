@@ -102,7 +102,7 @@ const VenueDetails = () => {
                                 <div className="card-name-price">
                                     <button
                                         className="btn btn-info ms-1"
-                                        onClick={() => navigate(`/venue/${v.slug}`)}
+                                        onClick={() => navigate(`/product/${v.slug}`)}
                                     >
                                         More Details
                                     </button>
