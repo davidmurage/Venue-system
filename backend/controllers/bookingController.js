@@ -1,5 +1,14 @@
 import Booking from "../models/bookingModel.js";
 import venueModel from "../models/venueModel.js"; // Corrected import
+import nodemailer from "nodemailer";
+
+const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+        user: process.env.EMAIL,
+        pass: process.env.PASSWORD,
+    },
+})
 
 // Create a new booking
 export const createBooking = async (req, res) => {
@@ -74,3 +83,25 @@ export const cancelBooking = async (req, res) => {
     res.status(500).json({ error: "Something went wrong" });
   }
 };
+
+//sending emails
+export const sendingBookingEmail = async(req, res) =>{
+    try{
+        const{bookingId, email}=req.body;
+        const booking = await Booking.findById(bookingId);
+        if(!booking){
+            return res.status(404).send({message: "Booking not found"});
+        }
+        const mailOptions = {
+            from: process.env.EMAIL,
+            to: email,
+            subject: "Booking Confirmation",
+            text: `Hello ${booking.name}, Your booking for ${booking.venueName} on ${booking.date} at ${booking.time} has been confirmed.`
+        }
+        await transporter.sendMail(mailOptions);
+        res.status(200).send({success:true, message: "Email sent successfully"});
+    }catch(error){
+        console.log(error);
+        res.status(500).send({success:false, message: "Error in sending email", error});
+    }
+}

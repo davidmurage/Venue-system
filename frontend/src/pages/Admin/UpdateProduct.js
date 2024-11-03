@@ -76,7 +76,7 @@ const UpdateVenue = () => {
       const { data } = await axios.put(`/api/v1/venue/update-venue/${id}`, venueData);
       if (data?.success) {
         toast.success("Venue updated successfully");
-        navigate("/dashboard/admin/venues");
+        navigate("/dashboard/admin/products");
       } else {
         toast.error(data?.message);
       }
@@ -94,7 +94,7 @@ const UpdateVenue = () => {
       const { data } = await axios.delete(`/api/v1/venue/delete-venue/${id}`);
       if (data?.success) {
         toast.success("Venue deleted successfully");
-        navigate("/dashboard/admin/venues");
+        navigate("/dashboard/admin/products");
       } else {
         toast.error(data?.message);
       }
