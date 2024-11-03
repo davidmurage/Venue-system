@@ -19,13 +19,13 @@ import Search from './pages/Search';
 import Categories from './pages/Categories';
 import CategoryProduct from './pages/CategoryProduct';
 import CartPage from './pages/CartPage';
-import AdminOrders from './pages/Admin/AdminOrders';
 import BookingForm from './pages/bookingForm';
 import MyBookings from './pages/user/MyBookings';
 import PaymentPage from './pages/Payment';
 import Venues from './pages/Admin/Products';
 import UpdateVenue from './pages/Admin/UpdateProduct';
 import VenueDetails from './pages/ProductDetails';
+import AdminBookings from './pages/Admin/AdminOrders';
 
 function App() {
   return(
@@ -51,7 +51,7 @@ function App() {
           <Route path='admin/product/:slug' element={<UpdateVenue/>}/> 
           <Route path="admin/products" element={<Venues/>}/>
           <Route path="admin/Users" element={<Users/>} />
-          <Route path='admin/orders' element={<AdminOrders/>}/>
+          <Route path='admin/orders' element={<AdminBookings/>}/>
         </Route>
         
         <Route path="/login" element={<Login />} />
