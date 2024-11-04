@@ -71,12 +71,20 @@ const MyBookings = () => {
                       <td>{new Date(booking.date).toLocaleDateString()}</td>
                       <td>{booking.time}</td>
                       <td>
-                        <img
-                          src={booking.venue?.photo?.data || 'defaultImage.jpg'}
-                          alt="venue"
-                          style={{ width: '50px', height: '50px', objectFit: 'cover' }}
-                        />
-                      </td>
+  {booking.venue?.photo ? (
+    <img
+      src={`data:${booking.venue?.photo.contentType};base64,${booking.venue?.photo.base64Photo}`}
+      alt="venue"
+      style={{ width: '50px', height: '50px', objectFit: 'cover' }}
+    />
+  ) : (
+    <img
+      src="defaultImage.jpg"
+      alt="default venue"
+      style={{ width: '50px', height: '50px', objectFit: 'cover' }}
+    />
+  )}
+</td>
                       <td>
                         <button
                           className="btn btn-warning"

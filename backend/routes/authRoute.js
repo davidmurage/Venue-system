@@ -5,6 +5,10 @@ import {
     forgotPasswordController, 
     testController, 
     updateProfileController,
+    getAllUsers,
+    approveUser,
+    deleteUser,
+    restrictUser,
   } 
     from '../controllers/authController.js';
 import { requireSignIn, isAdmin } from '../middlewares/authMiddleware.js';
@@ -39,6 +43,19 @@ router.get('/admin-auth', requireSignIn, isAdmin,  (req, res) => {
 
 //update profile
 router.put('/profile', requireSignIn, updateProfileController);
+
+//get-all users
+router.get('/get-users',requireSignIn, isAdmin, getAllUsers);
+
+//approve-users
+router.put('/approve-user/:id', requireSignIn, isAdmin, approveUser);
+
+//delete users
+router.delete('/delete-user/:id', requireSignIn, isAdmin, deleteUser);
+
+//restrict user
+router.put('/restrict-user', requireSignIn, isAdmin, restrictUser);
+
 
 
 

@@ -13,7 +13,6 @@ import AdminRoute from './components/Routes/AdminRoute';
 import AdminDashboard from './pages/Admin/AdminDashboard';
 import CreateCategory from './pages/Admin/CreateCategory';
 import CreateProduct from './pages/Admin/CreateProduct';
-import Users from './pages/Admin/Users';
 import Profile from './pages/user/Profile';
 import Search from './pages/Search';
 import Categories from './pages/Categories';
@@ -26,6 +25,7 @@ import Venues from './pages/Admin/Products';
 import UpdateVenue from './pages/Admin/UpdateProduct';
 import VenueDetails from './pages/ProductDetails';
 import AdminBookings from './pages/Admin/AdminOrders';
+import AdminUsers from './pages/Admin/Users';
 
 function App() {
   return(
@@ -50,7 +50,7 @@ function App() {
           <Route path="admin/create-product" element={<CreateProduct />} />
           <Route path='admin/product/:slug' element={<UpdateVenue/>}/> 
           <Route path="admin/products" element={<Venues/>}/>
-          <Route path="admin/Users" element={<Users/>} />
+          <Route path="admin/Users" element={<AdminUsers/>} />
           <Route path='admin/orders' element={<AdminBookings/>}/>
         </Route>
         

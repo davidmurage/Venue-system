@@ -166,3 +166,58 @@ export const updateProfileController = async (req, res) => {
 };
     
  
+//get all users
+export const getAllUsers = async(req, res) =>{
+    try{
+        const users = await userModel.find().select('-password');
+        res.status(200).send({success:true, users})
+    }catch(error){
+        console.log(error);
+        res.status(400).send({success:false, message:"Error in getting users"});
+    }
+}
+
+//Approve users
+export const approveUser = async (req, res) => {
+    try{
+        const userId = req.params.id;
+        const user = await userModel.findByIdAndUpdate(userId, {isApproved: true}, {new: true}).select("-password");
+        if(!user){
+            return res.status(404).send({success: false, message: 'User not found'});
+        }
+        res.status(200).send({success: true, message: 'User approved successfully', user});
+    }catch(error){
+        console.log(error);
+        res.status(400).send({success: false, message: 'Error in approving user'});
+    }
+}
+
+//Delete user
+export const deleteUser = async (req, res) => {
+    try{
+        const userId = req.params.id;
+        const user = await userModel.findByIdAndDelete(userId);
+        if(!user){
+            return res.status(404).send({success: false, message: 'User not found'})
+        }
+        res.status(200).send({success: true, message: 'User deleted successfully'});
+    }catch(error){
+        console.log(error);
+        res.status(400).send({success: false, message: 'Error in deleting user'})
+    }
+}
+
+//restrict user
+export const restrictUser = async (req, res) => {
+    try{
+        const userId = req.params.id;
+        const user = await userModel.findByIdAndUpdate(userId, {isRestricted: true}, {new: true}).select("-password");
+        if(!user){
+            return res.status(404).send({success: false, message: 'User not found'})
+        }
+        res.status(200).send({success: true, message: 'User restricted successfully', user});
+    }catch(error){
+        console.log(error);
+        res.status(404).send({success: false, message:"Error in restricting user"});
+    }
+}

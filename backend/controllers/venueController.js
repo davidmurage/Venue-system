@@ -84,10 +84,15 @@ export const getSingleVenueController = async(req, res) => {
 export const venuePhotoController = async(req, res) => {
     try{
         const venue = await venueModel.findById(req.params.pid).select("photo");
-        if(venue.photo.data){
-            res.set("Content-Type", venue.photo.contentType);
-            return res.send(venue.photo.data);
-        }
+        if (venue && venue.photo && venue.photo.data) {
+            const base64Photo = venue.photo.data.toString('base64');
+            res.status(200).json({
+              contentType: venue.photo.contentType,
+              base64Photo: base64Photo,
+            });
+          } else {
+            res.status(404).send('Photo not found');
+          }
     }catch(error){
         console.log(error);
         res.status(500).send({success: false, message: "Error in getting venue photo", error});
