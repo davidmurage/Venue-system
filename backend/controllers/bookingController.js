@@ -106,3 +106,29 @@ export const sendingBookingEmail = async(req, res) =>{
         res.status(500).send({success:false, message: "Error in sending email", error});
     }
 }
+
+//booking cancellation by users
+export const requestBookingCancel = async(req, res) =>{
+  try{
+    const {bookingId, email} = req.body;
+    const booking = await Booking.findById(bookingId).populate("venue");
+
+    if(!booking){
+      return res.status(404).json({error: "Booking not found"});
+    }
+
+    const mailOptions = {
+      from: process.env.EMAIL,
+      to: process.env.ADMIN_EMAIL,
+      subject: "Booking Cancellation Request",
+      text: `User ${booking.name} has requested cancellation for the booking of venue ${booking.venue.name} on ${new Date(booking.date).toDateString()} at ${booking.time}. User email: ${email}`,
+    };
+
+    await transporter.sendMail(mailOptions);
+    res.status(200).json({ success: true, message: 'Cancellation request sent to admin' });
+
+  }catch(error){
+    console.log(error);
+    res.status(400).send({success:false, message: "Failure in cancelling the booking"});
+  }
+}
