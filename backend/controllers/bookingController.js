@@ -89,15 +89,15 @@ export const cancelBooking = async (req, res) => {
 export const sendingBookingEmail = async(req, res) =>{
     try{
         const{bookingId, email}=req.body;
-        const booking = await Booking.findById(bookingId);
+        const booking = await Booking.findById(bookingId).populate('venue');
         if(!booking){
             return res.status(404).send({message: "Booking not found"});
         }
         const mailOptions = {
             from: process.env.EMAIL,
             to: email,
-            subject: "Booking Confirmation",
-            text: `Hello ${booking.name}, Your booking for ${booking.venueName} on ${booking.date} at ${booking.time} has been confirmed.`
+            subject: "Venue Booking Confirmation",
+            text: `Hello ${booking.name}, Your booking for ${booking.venue ? booking.venue.name : "Venue Name Unavailable"} on ${booking.date} at ${booking.time} has been confirmed.`
         }
         await transporter.sendMail(mailOptions);
         res.status(200).send({success:true, message: "Email sent successfully"});
