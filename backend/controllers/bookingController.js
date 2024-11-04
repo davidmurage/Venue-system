@@ -8,6 +8,9 @@ const transporter = nodemailer.createTransport({
         user: process.env.EMAIL,
         pass: process.env.PASSWORD,
     },
+    tls: {
+        rejectUnauthorized: false, // This allows self-signed certificates
+      },
 })
 
 // Create a new booking
@@ -67,21 +70,19 @@ export const getUserBookings = async (req, res) => {
 
 // Cancel a booking with authorization check
 export const cancelBooking = async (req, res) => {
-  try {
-    const bookingId = req.params.id;
-    const userId = req.user._id;
-
-    // Ensure booking belongs to the user before deleting
-    const booking = await Booking.findOneAndDelete({ _id: bookingId, user: userId });
-
-    if (!booking) {
-      return res.status(400).json({ error: "Booking not found or Unauthorized" });
-    }
-    res.status(200).json({ success: true, message: "Booking cancelled" });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Something went wrong" });
-  }
+    try {
+        const bookingId = req.params.id;
+    
+        const booking = await Booking.findByIdAndDelete(bookingId);
+        if (!booking) {
+          return res.status(404).json({ error: 'Booking not found' });
+        }
+    
+        res.status(200).json({ success: true, message: 'Booking cancelled successfully' });
+      } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Failed to cancel booking' });
+      }
 };
 
 //sending emails
