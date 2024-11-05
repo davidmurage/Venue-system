@@ -22,7 +22,7 @@ const HomePage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/endpoint`);
+        const response = await fetch(`${process.env.REACT_APP_API}/api/endpoint`);
         const result = await response.json();
         setData(result);
       } catch (error) {
