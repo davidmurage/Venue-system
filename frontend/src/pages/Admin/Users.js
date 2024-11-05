@@ -54,7 +54,7 @@ const AdminUsers = () => {
     }
   };
 
-  const handleRestrict = async (userId) => {
+  const handleRestrict = async (userId, updateField) => {
     try {
       const token = localStorage.getItem('token');
       await axios.put(`/api/v1/auth/restrict-user/${userId}`, {}, {
@@ -63,7 +63,7 @@ const AdminUsers = () => {
         },
       });
       toast.success('User restricted successfully');
-      setUsers(users.map(user => user._id === userId ? { ...user, isRestricted: true } : user));
+      setUsers(users.map(user => user._id === userId ? { ...user, updateField } : user));
     } catch (error) {
       toast.error('Failed to restrict user');
     }
@@ -71,8 +71,11 @@ const AdminUsers = () => {
 
   return (
     <Layout title="Admin User Management">
-      <div className="container mt-3">
+      <div className="row dashboard">
+        <div className='col-md-3'>
         <AdminMenu/>
+        </div>
+        <div className='col-md-9'>
         <h1>Manage Users</h1>
         <table className="table">
           <thead>
@@ -112,6 +115,7 @@ const AdminUsers = () => {
             ))}
           </tbody>
         </table>
+        </div>
       </div>
     </Layout>
   );

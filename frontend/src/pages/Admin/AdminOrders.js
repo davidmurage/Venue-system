@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Layout from '../../components/Layout/Layout';
 import toast from 'react-hot-toast';
+import AdminMenu from '../../components/Layout/AdminMenu';
 
 const AdminBookings = () => {
   const [bookings, setBookings] = useState([]);
@@ -42,7 +43,11 @@ const AdminBookings = () => {
 
   return (
     <Layout title="Admin Bookings">
-      <div className="container mt-3">
+      <div className="row dashboard">
+        <div className='col-md-3'>
+          <AdminMenu/>
+        </div>
+        <div className="col-md-9">
         <h1>All Bookings</h1>
         <table className="table">
           <thead>
@@ -81,6 +86,7 @@ const AdminBookings = () => {
             ))}
           </tbody>
         </table>
+      </div>
       </div>
     </Layout>
   );

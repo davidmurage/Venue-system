@@ -54,7 +54,7 @@ router.put('/approve-user/:id', requireSignIn, isAdmin, approveUser);
 router.delete('/delete-user/:id', requireSignIn, isAdmin, deleteUser);
 
 //restrict user
-router.put('/restrict-user', requireSignIn, isAdmin, restrictUser);
+router.put('/restrict-user/:id', requireSignIn, isAdmin, restrictUser);
 
 
 
