@@ -17,7 +17,6 @@ import Profile from './pages/user/Profile';
 import Search from './pages/Search';
 import Categories from './pages/Categories';
 import CategoryProduct from './pages/CategoryProduct';
-import CartPage from './pages/CartPage';
 import BookingForm from './pages/bookingForm';
 import MyBookings from './pages/user/MyBookings';
 import PaymentPage from './pages/Payment';
@@ -36,7 +35,7 @@ function App() {
         <Route path='/search' element ={<Search/>}/>
         <Route path='/categories' element={<Categories/>}/>
         <Route path="/category/:slug" element={<CategoryProduct />} />
-        <Route path='/cart' element={<CartPage/>}/>
+       
         <Route path="/register" element={<Register />} />
         <Route path='/dashboard' element={<PrivateRoute/>}>
           <Route path="user" element={<Dashboard />} />

@@ -23,7 +23,7 @@ const app = express();
 app.use(express.json());
 app.use(cors(
   {
-    origin: ["https://venue-system.onrender.com/"],
+    origin: ["https://venue-system.onrender.com"],
     methods: ['GET', 'POST', ],
     credentials: true
   }
