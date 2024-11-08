@@ -3,6 +3,7 @@ import Layout from "../components/Layout/Layout";
 import { useParams, useNavigate } from "react-router-dom";
 import "../styles/CategoryProductStyles.css";
 import axios from "axios";
+import { BASE_URL } from "../utils/config";
 
 const CategoryVenue = () => {
   const params = useParams();
@@ -16,7 +17,7 @@ const CategoryVenue = () => {
 
   const getVenuesByCategory = async () => {
     try {
-      const { data } = await axios.get(`/api/v1/venue/venue-category/${params.slug}`);
+      const { data } = await axios.get(`${BASE_URL}/api/v1/venue/venue-category/${params.slug}`);
       setVenues(data?.venues); // Update to 'venues' for consistent naming
       setCategory(data?.category);
     } catch (error) {
@@ -35,7 +36,7 @@ const CategoryVenue = () => {
               {venues?.map((venue) => (
                 <div className="card m-2" key={venue._id}>
                   <img
-                    src={`/api/v1/venue/venue-photo/${venue._id}`}
+                    src={`${BASE_URL}/api/v1/venue/venue-photo/${venue._id}`}
                     className="card-img-top"
                     alt={venue.name}
                   />

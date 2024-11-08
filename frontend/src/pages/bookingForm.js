@@ -3,6 +3,7 @@ import Layout from '../components/Layout/Layout';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
+import { BASE_URL } from '../utils/config';
 
 const BookingForm = () => {
   const [formData, setFormData] = useState({
@@ -18,7 +19,7 @@ const BookingForm = () => {
   useEffect(() => {
     const fetchVenueId = async () => {
       try {
-        const { data } = await axios.get(`/api/v1/venue/get-venue/${slug}`);
+        const { data } = await axios.get(`${BASE_URL}/api/v1/venue/get-venue/${slug}`);
         setFormData((prevData) => ({ ...prevData, venueId: data.venue._id }));
       } catch (error) {
         toast.error('Failed to load venue details');
@@ -37,7 +38,7 @@ const BookingForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post('/api/v1/booking/create-bookings', formData); // Adjusted endpoint and payload
+      const res = await axios.post(`${BASE_URL}/api/v1/booking/create-bookings`, formData); // Adjusted endpoint and payload
       if (res.status === 201 || res.data.success) {
         toast.success('Booking successful');
         navigate('/dashboard/user/myBookings'); // Redirect to myBookings 

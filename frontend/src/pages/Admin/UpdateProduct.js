@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 import axios from "axios";
 import { Select } from "antd";
 import { useNavigate, useParams } from "react-router-dom";
+import { BASE_URL } from "../../utils/config";
 const { Option } = Select;
 
 const UpdateVenue = () => {
@@ -22,7 +23,7 @@ const UpdateVenue = () => {
   // Get single venue
   const getSingleVenue = async () => {
     try {
-      const { data } = await axios.get(`/api/v1/venue/get-venue/${params.slug}`);
+      const { data } = await axios.get(`${BASE_URL}/api/v1/venue/get-venue/${params.slug}`);
       if (data?.success) {
         setName(data.venue.name);
         setId(data.venue._id);
@@ -47,7 +48,7 @@ const UpdateVenue = () => {
   // Get all categories
   const getAllCategories = async () => {
     try {
-      const { data } = await axios.get("/api/v1/category/get-category");
+      const { data } = await axios.get(`${BASE_URL}/api/v1/category/get-category`);
       if (data?.success) {
         setCategories(data.category);
       }
@@ -73,7 +74,7 @@ const UpdateVenue = () => {
       photo && venueData.append("photo", photo);
       venueData.append("category", category);
 
-      const { data } = await axios.put(`/api/v1/venue/update-venue/${id}`, venueData);
+      const { data } = await axios.put(`${BASE_URL}/api/v1/venue/update-venue/${id}`, venueData);
       if (data?.success) {
         toast.success("Venue updated successfully");
         navigate("/dashboard/admin/products");
@@ -91,7 +92,7 @@ const UpdateVenue = () => {
     try {
       let answer = window.confirm("Are you sure you want to delete this venue?");
       if (!answer) return;
-      const { data } = await axios.delete(`/api/v1/venue/delete-venue/${id}`);
+      const { data } = await axios.delete(`${BASE_URL}/api/v1/venue/delete-venue/${id}`);
       if (data?.success) {
         toast.success("Venue deleted successfully");
         navigate("/dashboard/admin/products");
@@ -156,7 +157,7 @@ const UpdateVenue = () => {
                 ) : (
                   <div className="text-center">
                     <img
-                      src={`/api/v1/venue/venue-photo/${id}`}
+                      src={`${BASE_URL}/api/v1/venue/venue-photo/${id}`}
                       alt="venue_photo"
                       height={"200px"}
                       className="img img-responsive"

@@ -3,6 +3,7 @@ import axios from 'axios';
 import Layout from '../../components/Layout/Layout';
 import toast from 'react-hot-toast';
 import AdminMenu from '../../components/Layout/AdminMenu';
+import { BASE_URL } from '../../utils/config';
 
 const AdminUsers = () => {
   const [users, setUsers] = useState([]);
@@ -11,7 +12,7 @@ const AdminUsers = () => {
     const fetchUsers = async () => {
       try {
         const token = localStorage.getItem('token');
-        const res = await axios.get('/api/v1/auth/get-users', {
+        const res = await axios.get(`${BASE_URL}/api/v1/auth/get-users`, {
           headers: {
             authorization: `Bearer ${token}`,
           },
@@ -27,7 +28,7 @@ const AdminUsers = () => {
   const handleApprove = async (userId) => {
     try {
       const token = localStorage.getItem('token');
-      await axios.put(`/api/v1/auth/approve-user/${userId}`, {}, {
+      await axios.put(`${BASE_URL}/api/v1/auth/approve-user/${userId}`, {}, {
         headers: {
           authorization: `Bearer ${token}`,
         },
@@ -42,7 +43,7 @@ const AdminUsers = () => {
   const handleDelete = async (userId) => {
     try {
       const token = localStorage.getItem('token');
-      await axios.delete(`/api/v1/auth/delete-user/${userId}`, {
+      await axios.delete(`${BASE_URL}/api/v1/auth/delete-user/${userId}`, {
         headers: {
           authorization: `Bearer ${token}`,
         },
@@ -57,7 +58,7 @@ const AdminUsers = () => {
   const handleRestrict = async (userId, updateField) => {
     try {
       const token = localStorage.getItem('token');
-      await axios.put(`/api/v1/auth/restrict-user/${userId}`, {}, {
+      await axios.put(`${BASE_URL}/api/v1/auth/restrict-user/${userId}`, {}, {
         headers: {
           authorization: `Bearer ${token}`,
         },

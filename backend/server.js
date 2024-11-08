@@ -21,14 +21,21 @@ const app = express();
 
 //middleware
 app.use(express.json());
+
 app.use(cors(
   {
-    origin: ["https://venue-system.onrender.com"],
+    origin: ["http://localhost:3001","https://venue-system.onrender.com"],
     methods: ['GET', 'POST', ],
     credentials: true
   }
 ));
 app.use(morgan('dev'));
+const corsOptions = {
+  origin: true,
+  credentials: true,
+}
+
+app.use(cors(corsOptions));
 
 
 //routes

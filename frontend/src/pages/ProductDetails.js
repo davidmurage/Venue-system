@@ -4,6 +4,7 @@ import axios from 'axios';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import "../styles/ProductDetailsStyles.css";
 import toast from 'react-hot-toast';
+import { BASE_URL } from '../utils/config';
 
 const VenueDetails = () => {
     const navigate = useNavigate();
@@ -18,7 +19,7 @@ const VenueDetails = () => {
     // Get single venue
     const getVenue = async () => {
         try {
-            const { data } = await axios.get(`/api/v1/venue/get-venue/${params.slug}`);
+            const { data } = await axios.get(`${BASE_URL}/api/v1/venue/get-venue/${params.slug}`);
             if (data?.success) {
                 setVenue(data.venue);
                 getSimilarVenues(data.venue._id, data.venue.category._id);
@@ -34,7 +35,7 @@ const VenueDetails = () => {
     // Get similar venues by category
     const getSimilarVenues = async (venueId, categoryId) => {
         try {
-            const { data } = await axios.get(`/api/v1/venue/related-venue/${venueId}/${categoryId}`);
+            const { data } = await axios.get(`${BASE_URL}/api/v1/venue/related-venue/${venueId}/${categoryId}`);
             setRelatedVenues(data?.venues || []);
         } catch (error) {
             console.log(error);
@@ -47,7 +48,7 @@ const VenueDetails = () => {
             <div className="row container mt-2">
                 <div className="col-md-6">
                     <img
-                        src={`/api/v1/venue/venue-photo/${venue._id}`}
+                        src={`${BASE_URL}/api/v1/venue/venue-photo/${venue._id}`}
                         className="card-img-top"
                         alt={venue.name}
                         height="300"
@@ -82,7 +83,7 @@ const VenueDetails = () => {
                     {relatedVenues.map((v) => (
                         <div className="card m-2" key={v._id}>
                             <img
-                                src={`/api/v1/venue/venue-photo/${v._id}`}
+                                src={`${BASE_URL}/api/v1/venue/venue-photo/${v._id}`}
                                 className="card-img-top"
                                 alt={v.name}
                             />

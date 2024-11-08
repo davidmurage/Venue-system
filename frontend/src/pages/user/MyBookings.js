@@ -3,6 +3,7 @@ import Layout from '../../components/Layout/Layout';
 import UserMenu from '../../components/Layout/UserMenu';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import { BASE_URL } from '../../utils/config';
 
 const MyBookings = () => {
   const [bookings, setBookings] = useState([]);
@@ -11,7 +12,7 @@ const MyBookings = () => {
     const fetchBookings = async () => {
       try {
         const token = localStorage.getItem('token');
-        const res = await axios.get('/api/v1/booking/get-myBookings', {
+        const res = await axios.get(`${BASE_URL}/api/v1/booking/get-myBookings`, {
           headers: {
             authorization: `Bearer ${token}`,
           },
@@ -28,7 +29,7 @@ const MyBookings = () => {
     try {
       const token = localStorage.getItem('token');
       await axios.post(
-        '/api/v1/booking/request-cancel',
+        `${BASE_URL}/api/v1/booking/request-cancel`,
         { bookingId, email },
         {
           headers: {

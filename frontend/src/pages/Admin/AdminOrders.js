@@ -3,6 +3,7 @@ import axios from 'axios';
 import Layout from '../../components/Layout/Layout';
 import toast from 'react-hot-toast';
 import AdminMenu from '../../components/Layout/AdminMenu';
+import { BASE_URL } from '../../utils/config';
 
 const AdminBookings = () => {
   const [bookings, setBookings] = useState([]);
@@ -10,7 +11,7 @@ const AdminBookings = () => {
   useEffect(() => {
     const fetchBookings = async () => {
       try {
-        const { data } = await axios.get('/api/v1/booking/get-bookings');
+        const { data } = await axios.get(`${BASE_URL}/api/v1/booking/get-bookings`);
         setBookings(data.bookings);
       } catch (error) {
         console.error(error);
@@ -22,7 +23,7 @@ const AdminBookings = () => {
 
   const handleSendEmail = async (bookingId, email) => {
     try {
-      await axios.post(`/api/v1/booking/sendEmail`, { bookingId, email });
+      await axios.post(`${BASE_URL}/api/v1/booking/sendEmail`, { bookingId, email });
       toast.success('Email sent successfully');
     } catch (error) {
       console.error(error);
@@ -32,7 +33,7 @@ const AdminBookings = () => {
 
   const handleCancelBooking = async (bookingId) => {
     try {
-      await axios.delete(`/api/v1/booking/delete-booking/${bookingId}`);
+      await axios.delete(`${BASE_URL}/api/v1/booking/delete-booking/${bookingId}`);
       toast.success('Booking cancelled successfully');
       setBookings(bookings.filter((booking) => booking._id !== bookingId));
     } catch (error) {

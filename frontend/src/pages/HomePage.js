@@ -7,6 +7,7 @@ import toast from 'react-hot-toast';
 import { Checkbox, Radio } from 'antd';
 import { AiOutlineReload } from "react-icons/ai";
 import "../styles/Homepage.css";
+import { BASE_URL } from '../utils/config';
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -22,7 +23,7 @@ const HomePage = () => {
   // Get all categories
   const getAllCategories = async () => {
     try {
-      const { data } = await axios.get("/api/v1/category/get-category");
+      const { data } = await axios.get(`${BASE_URL}/api/v1/category/get-category`);
       if (data?.success) {
         setCategories(data.category);
       }
@@ -36,7 +37,7 @@ const HomePage = () => {
   const getVenues = async (reset = false) => {
     try {
       setLoading(true);
-      const { data } = await axios.get(`/api/v1/venue/venue-list/${page}`);
+      const { data } = await axios.get(`${BASE_URL}/api/v1/venue/venue-list/${page}`);
       setLoading(false);
       setVenues(reset ? data.venues : [...venues, ...data.venues]);
     } catch (error) {
@@ -50,7 +51,7 @@ const HomePage = () => {
   // Get total venue count
   const getTotalVenues = async () => {
     try {
-      const { data } = await axios.get("/api/v1/venue/venue-count");
+      const { data } = await axios.get(`${BASE_URL}/api/v1/venue/venue-count`);
       setTotal(data.total);
     } catch (error) {
       console.log(error);
@@ -86,7 +87,7 @@ const HomePage = () => {
   // Filter venues by selected categories and price
   const filterVenues = async () => {
     try {
-      const { data } = await axios.post("/api/v1/venue/venue-filters", { checked: checkedCategories, radio });
+      const { data } = await axios.post(`${BASE_URL}/api/v1/venue/venue-filters`, { checked: checkedCategories, radio });
       setVenues(data.venues);
     } catch (error) {
       console.log(error);
@@ -154,7 +155,7 @@ const HomePage = () => {
             {venues.map((venue) => (
               <div className="card m-2" key={venue._id}>
                 <img
-                  src={`/api/v1/venue/venue-photo/${venue._id}`}
+                  src={`${BASE_URL}/api/v1/venue/venue-photo/${venue._id}`}
                   className="card-img-top"
                   alt={venue.name}
                 />

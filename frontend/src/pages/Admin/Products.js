@@ -4,6 +4,7 @@ import Layout from "../../components/Layout/Layout";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
+import { BASE_URL } from "../../utils/config";
 
 const Venues = () => {
   const [venues, setVenues] = useState([]);
@@ -11,7 +12,7 @@ const Venues = () => {
   // Get all venues
   const getAllVenues = async () => {
     try {
-      const { data } = await axios.get("/api/v1/venue/get-venue");
+      const { data } = await axios.get(`${BASE_URL}/api/v1/venue/get-venue`);
       if (data?.success) {
         setVenues(data.venues);
       } else {
@@ -40,12 +41,12 @@ const Venues = () => {
             {venues.map((venue) => (
               <Link
                 key={venue._id}
-                to={`/dashboard/admin/product/${venue.slug}`}
+                to={`${BASE_URL}/dashboard/admin/product/${venue.slug}`}
                 className="venue-link"
               >
                 <div className="card m-2" style={{ width: "18rem" }}>
                   <img
-                    src={`/api/v1/venue/venue-photo/${venue._id}`}
+                    src={`${BASE_URL}/api/v1/venue/venue-photo/${venue._id}`}
                     className="card-img-top"
                     alt={venue.name}
                   />
