@@ -258,7 +258,7 @@ export const paymentController = async(req, res) => {
                 PartyA: phoneNumber,
                 PartyB: process.env.DARAJA_SHORTCODE,
                 PhoneNumber: phoneNumber,
-                CallBackURL: "https://yourcallbackurl.com",
+                CallBackURL: "https://sandbox.safaricom.co.ke/mpesa/",
                 AccountReference: "Test",
                 TransactionDesc: "Test",
             },
